@@ -13,37 +13,45 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="control.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Filter Include="Source Files\models">
+      <UniqueIdentifier>{474adba1-d984-4324-ba52-2ea26c4af9e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\helpers">
+      <UniqueIdentifier>{3f37d977-f604-43dd-a2d8-04fca763309d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="control.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="control.model.c">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="aviao.model.c">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="passag.model.c">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="main.helper.c">
+      <Filter>Source Files\helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="control.rc">
+    <ClInclude Include="control.model.h">
+      <Filter>Source Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="aviao.model.h">
+      <Filter>Source Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="passag.model.h">
+      <Filter>Source Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="main.helper.h">
+      <Filter>Source Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
       <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="control.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
+    </ClInclude>
   </ItemGroup>
 </Project>

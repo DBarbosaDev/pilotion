@@ -3,7 +3,7 @@
 #define REGISTRY_PATH _T("SOFTWARE\\Pilotion")
 
 #define REGISTRY_TMP_CONTROL_PATH _T("SOFTWARE\\Pilotion\\tmp\\control\\")
-#define REGISTRY_TMP_CONTROL_STATUS _T("programStatus")
+#define REGISTRY_TMP_CONTROL_STATUS _T("status")
 #define REGISTRY_TMP_CONTROL_NAMEDPIPE _T("namedPipe")
 #define REGISTRY_TMP_CONTROL_MAX_AIRPORTS _T("maxAirports")
 #define REGISTRY_TMP_CONTROL_MAX_PLANES _T("maxPlanes")

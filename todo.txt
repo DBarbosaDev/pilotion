@@ -1,4 +1,6 @@
 TODO:
+	## control program
+	
 	-> Criar as memórias partilhadas e os named pipes.
 	-> Funcionalidade que permite a criação de aeroportos
 		--> campos: nome (unique), coordenadas (x,y);

@@ -15,7 +15,7 @@ TCHAR* newString(TCHAR *text) {
 	return string;
 }
 
-int setRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME, DWORD* valueData) {
+int setRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME, TCHAR* valueData) {
     HKEY registerKey;
     LSTATUS creationStatus = RegCreateKeyEx(HKEY_CURRENT_USER, PATH, 0, NULL, REG_OPTION_VOLATILE, KEY_ALL_ACCESS, NULL, &registerKey, NULL);
 
@@ -27,7 +27,7 @@ int setRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME, DWORD* valueData) {
         return 0;
     }
 
-    creationStatus = RegSetValueEx(registerKey, VALUE_NAME, 0, REG_SZ, valueData, sizeof(valueData));
+    creationStatus = RegSetValueEx(registerKey, VALUE_NAME, 0, REG_SZ, valueData, wcslen(valueData) * sizeof(TCHAR));
 
     if (creationStatus != ERROR_SUCCESS) {
         wprintf(_T("ERRO: Registo da variavel: %s\n"), VALUE_NAME);
@@ -44,7 +44,7 @@ int setRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME, DWORD* valueData) {
 }
 
 TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME) {
-    DWORD valueDataSize;
+    DWORD valueDataSize = 0;
 
     LSTATUS requisitionStatus = RegGetValue(HKEY_CURRENT_USER, PATH, VALUE_NAME, RRF_RT_REG_SZ, NULL, NULL, &valueDataSize);
 

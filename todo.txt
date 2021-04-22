@@ -1,0 +1,14 @@
+TODO:
+	-> Criar as memórias partilhadas e os named pipes.
+	-> Funcionalidade que permite a criação de aeroportos
+		--> campos: nome (unique), coordenadas (x,y);
+		--> Não devem existir aeroportos num raio de 10 posições. (validação feita através da inequação de uma circunferencia: (x-x1)**2 + (y-y1)**2 > 10**2)
+	-> Mcanismo de controle da info acerca dos aviões que levantam e aterram.
+		--> Sai da stack do aeroporto origem e entra na do aeroporto destino
+		--> O aviao deverá conter um enum de estados: AGUARDA_PASSAGEIROS, LOTADO, EM_VOO, POUSOU_DESTINO, PRONTO_PARA_VOO
+		--> Este estado deverá ser refletido em ambos os programas (control e aviao)
+	-> Ver as atualizações das posições por parte dos aviões.
+		--> Dados bidirecionais através da memória partilhada, mas com sincronização (talvez mutexes)
+	-> Mecanismo de gestão da ocupação do espaço aéreo;
+		--> Cada aeroporto terá uma ocupação maxima de aviões. Sempre que enche, os novos aviões aguardarão até que haja lugar.
+	-> Mecanismo de handle de passag que se tentem conectar;

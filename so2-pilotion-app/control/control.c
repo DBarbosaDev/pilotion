@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <tchar.h>
-#include <windows.h>
 #include <fcntl.h>
+#include <windows.h>
 
 #include "constants.h"
 #include "main.helper.h"
+#include "control.model.h"
 
 #define INPUT_BUFF_SIZE 100
 
@@ -52,17 +53,14 @@ void checkControlStatus() {
     }
 }
 
-void _tmain()
-{
+void bootstrapInitialSetings() {
     #ifdef UNICODE
         _setmode(_fileno(stdin), _O_WTEXT);
         _setmode(_fileno(stdout), _O_WTEXT);
         _setmode(_fileno(stderr), _O_WTEXT);
     #endif
-    
-    TCHAR command[INPUT_BUFF_SIZE] = _T("\0");
 
-    checkControlStatus();
+    //checkControlStatus();
 
     if (!setAppRegistryVars()) {
         _wperror(_T("ERROR: O registo das variaveis no Register não teve sucesso.\n"));
@@ -73,15 +71,19 @@ void _tmain()
         _wperror(_T("ERROR: O programa não consegui carregar o handler da consola.\n"));
         exit(1);
     }
+}
+
+void _tmain() {
+    bootstrapInitialSetings();
+
+    TCHAR command[INPUT_BUFF_SIZE] = _T("\0");
+    ControlModel* Control = initControlModel();
 
     // routine logic goes here
-
     while (wcscmp(command, _T("exit"))) {
         wscanf_s(_T("%4s"), command, INPUT_BUFF_SIZE);
     }
-
     // -----------------------
 
     setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("0"));
 }
-

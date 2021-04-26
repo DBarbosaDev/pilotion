@@ -139,7 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\control\passag.model.c" />
     <ClCompile Include="passag.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\control\passag.model.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

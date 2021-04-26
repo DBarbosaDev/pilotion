@@ -21,12 +21,12 @@
     <ClCompile Include="passag.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\control\passag.model.c">
+    <ClCompile Include="passag.model.c">
       <Filter>Source Files\models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\control\passag.model.h">
+    <ClInclude Include="passag.model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

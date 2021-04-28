@@ -27,31 +27,31 @@
     <ClCompile Include="control.model.c">
       <Filter>Source Files\models</Filter>
     </ClCompile>
-    <ClCompile Include="aviao.model.c">
-      <Filter>Source Files\models</Filter>
-    </ClCompile>
-    <ClCompile Include="passag.model.c">
-      <Filter>Source Files\models</Filter>
-    </ClCompile>
     <ClCompile Include="main.helper.c">
       <Filter>Source Files\helpers</Filter>
     </ClCompile>
+    <ClCompile Include="airport.model.c">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="communication.model.c">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="control.model.h">
-      <Filter>Source Files\models</Filter>
-    </ClInclude>
-    <ClInclude Include="aviao.model.h">
-      <Filter>Source Files\models</Filter>
-    </ClInclude>
-    <ClInclude Include="passag.model.h">
-      <Filter>Source Files\models</Filter>
-    </ClInclude>
     <ClInclude Include="main.helper.h">
       <Filter>Source Files\helpers</Filter>
     </ClInclude>
     <ClInclude Include="constants.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="communication.model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="airport.model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="control.model.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

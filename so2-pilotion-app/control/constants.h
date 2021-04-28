@@ -1,5 +1,7 @@
 #pragma once
 
+#define NAME_BUFFER_SIZE 100
+
 #define REGISTRY_PATH _T("SOFTWARE\\Pilotion")
 
 #define REGISTRY_TMP_CONTROL_PATH _T("SOFTWARE\\Pilotion\\tmp\\control\\")

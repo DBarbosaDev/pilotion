@@ -139,16 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="aviao.model.c" />
+    <ClCompile Include="airport.model.c" />
+    <ClCompile Include="communication.model.c" />
     <ClCompile Include="control.c" />
     <ClCompile Include="control.model.c" />
     <ClCompile Include="main.helper.c" />
-    <ClCompile Include="passag.model.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aviao.model.h">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
+    <ClInclude Include="airport.model.h" />
+    <ClInclude Include="communication.model.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="control.model.h">
       <FileType>CppHeader</FileType>
@@ -156,7 +155,6 @@
     <ClInclude Include="main.helper.h">
       <FileType>CppHeader</FileType>
     </ClInclude>
-    <ClInclude Include="passag.model.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

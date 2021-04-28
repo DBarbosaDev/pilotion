@@ -14,6 +14,8 @@ int _tmain()
         _setmode(_fileno(stderr), _O_WTEXT);
     #endif
     wprintf(_T("Olá Mundo de avião"));
+
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

@@ -32,7 +32,7 @@ int setAppRegistryVars() {
         setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("1"))
         && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_PLANES, _T("10"))
         && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS, _T("30"))
-        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_NAMEDPIPE, _T("PilotionControlNamedPipe\0"))
+        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_NAMEDPIPE, _T("\\\\.\\pipe\\PilotionControlNamedPipe\0"))
         && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_WRITABLE_SHARED_MEMORY, sharedMemoryWR)
         && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_READABLE_SHARED_MEMORY, sharedMemoryRW)
         && setRegistryVar(REGISTRY_TMP_AVIAO_PATH, REGISTRY_TMP_AVIAO_WRITABLE_SHARED_MEMORY, sharedMemoryRW)
@@ -53,7 +53,7 @@ void checkControlStatus() {
     }
 }
 
-void bootstrapInitialSetings() {
+void bootstrapInitialSettings() {
     #ifdef UNICODE
         _setmode(_fileno(stdin), _O_WTEXT);
         _setmode(_fileno(stdout), _O_WTEXT);
@@ -74,10 +74,13 @@ void bootstrapInitialSetings() {
 }
 
 void _tmain() {
-    bootstrapInitialSetings();
+    bootstrapInitialSettings();
 
     TCHAR command[INPUT_BUFF_SIZE] = _T("\0");
-    ControlModel* Control = initControlModel();
+    ControlModel Control = initControlModel();
+    
+    /* Control.AirportsList = createAirport(NULL, newString(_T("Aeroporto2")), 0, 0);
+    createAirport(Control.AirportsList, newString(_T("Aeroporto3")), 0, 10); */
 
     // routine logic goes here
     while (wcscmp(command, _T("exit"))) {

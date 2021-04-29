@@ -24,9 +24,15 @@
     <ClCompile Include="aviao.model.c">
       <Filter>Source Files\models</Filter>
     </ClCompile>
+    <ClCompile Include="passageiro.model.c">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aviao.model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="passageiro.model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

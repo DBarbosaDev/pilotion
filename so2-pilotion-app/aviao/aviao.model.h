@@ -2,16 +2,33 @@
 
 #include <windows.h>
 #include <tchar.h>
+#include "passageiro.model.h"
 
-typedef struct AviaoModel {
+typedef struct Aviao {
 	DWORD PID;
 	int maxPassag;
 
-	int velocityInPositionsPerSecond;
+	int coordenadasPorSegundo;
 	
-	TCHAR* airportName;
-	TCHAR* destinationAirportName;
+	TCHAR* nomeAeroportoPartida;
+	TCHAR* siglaAeroportoPartida;
+	TCHAR* nomeAeroportoDestino;
+	TCHAR* siglaAeroportoDestino;
 
-} AviaoModel;
+	Passageiro passageiros[];
 
-AviaoModel newAviaoModel(DWORD PID, int maxPassag, int velocityInPositionsPerSecond, TCHAR* airportName, TCHAR* destinationAirportName);
+} Aviao;
+
+/**
+ *	Ordem obrigatória de envio de dados no método novoAviao
+ *	dadosAeroporto[0] = sigla aeroporto de partida
+ *  dadosAeroporto[1] = sigla do aeroporto de destino
+**/
+Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR* dadosAeroporto[]);
+
+/**
+ *	Embarcar um passageiro no respetivo aviao
+ *	caso o aviao ainda não tenha atigido a sua capacidade máxima 
+ *  e o destino de ambos seja o mesmo, o passageiro pode embarcar
+**/
+Passageiro embarcarPassageiro(Passageiro* passageiro, Aviao* aviao);

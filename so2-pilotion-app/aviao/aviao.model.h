@@ -4,31 +4,34 @@
 #include <tchar.h>
 #include "passageiro.model.h"
 
-typedef struct Aviao {
+#define MAXPASSAG 10
+
+typedef struct Aviao
+{
 	DWORD PID;
 	int maxPassag;
 
 	int coordenadasPorSegundo;
-	
-	TCHAR* nomeAeroportoPartida;
-	TCHAR* siglaAeroportoPartida;
-	TCHAR* nomeAeroportoDestino;
-	TCHAR* siglaAeroportoDestino;
 
-	Passageiro passageiros[];
+	TCHAR *nomeAeroportoPartida;
+	TCHAR *siglaAeroportoPartida;
+	TCHAR *nomeAeroportoDestino;
+	TCHAR *siglaAeroportoDestino;
+
+	Passageiro *passageiros[MAXPASSAG];
 
 } Aviao;
 
 /**
- *	Ordem obrigatória de envio de dados no método novoAviao
+ *	Ordem obrigatï¿½ria de envio de dados no mï¿½todo novoAviao
  *	dadosAeroporto[0] = sigla aeroporto de partida
  *  dadosAeroporto[1] = sigla do aeroporto de destino
 **/
-Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR* dadosAeroporto[]);
+Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR *dadosAeroporto[]);
 
 /**
  *	Embarcar um passageiro no respetivo aviao
- *	caso o aviao ainda não tenha atigido a sua capacidade máxima 
+ *	caso o aviao ainda nï¿½o tenha atigido a sua capacidade mï¿½xima
  *  e o destino de ambos seja o mesmo, o passageiro pode embarcar
 **/
-Passageiro embarcarPassageiro(Passageiro* passageiro, Aviao* aviao);
+Passageiro *embarcarPassageiro(Passageiro *passageiro, Aviao *aviao);

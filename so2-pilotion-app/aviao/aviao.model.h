@@ -4,6 +4,7 @@
 #include <tchar.h>
 #include "passageiro.model.h"
 
+
 #define MAXPASSAG 10
 
 typedef struct Aviao
@@ -12,7 +13,6 @@ typedef struct Aviao
 	int maxPassag;
 
 	int coordenadasPorSegundo;
-
 	TCHAR *nomeAeroportoPartida;
 	TCHAR *siglaAeroportoPartida;
 	TCHAR *nomeAeroportoDestino;

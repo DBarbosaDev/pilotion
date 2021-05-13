@@ -17,8 +17,10 @@ int _tmain()
 
     int maxPassag = 0;
     TCHAR coordenadasPorSegundo = "\0";
-    TCHAR dados[2];
-
+    TCHAR dados[2][200];
+    for (size_t i = 0; i < 2; i++)
+        memset(dados[i], 0, 200);
+    
     _tprintf(_TEXT("novoaviao;\n\n"));
     _tprintf(_TEXT("Numero maximo de passageiros;\n"));
     wscanf_s(_T("%d"), &maxPassag, 200);
@@ -27,17 +29,17 @@ int _tmain()
     wscanf_s(_T("%4s"), &coordenadasPorSegundo, 200);
 
     _tprintf(_TEXT("siglaAeroportoPartida;\n"));
-    wscanf_s(_T("%lc"), &dados[0], 200);
+    wscanf_s(_T("%199s"), &dados[0], 200);
 
     _tprintf(_TEXT("siglaAeroportoDestino;\n"));
-    wscanf_s(_T("%lc"), &dados[1], 200);
+    wscanf_s(_T("%199s"), &dados[1], 200);
 
     Aviao nAviao = novoAviao(0, maxPassag, coordenadasPorSegundo, dados);
-    printf("%d", nAviao.maxPassag);
-    printf("%lc", nAviao.siglaAeroportoDestino);
-    printf("%lc", nAviao.siglaAeroportoPartida);
+    wprintf(_T("%d"), nAviao.maxPassag);
+    wprintf(_T("%s"), nAviao.siglaAeroportoDestino);
+    wprintf(_T("%s"), nAviao.siglaAeroportoPartida);
 
-        return 0;
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

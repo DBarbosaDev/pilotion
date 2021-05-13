@@ -2,19 +2,20 @@
 
 #include <process.h>
 #include "aviao.model.h"
+#include "../control/main.helper.h"
 
 /**
  * @inheritDoc
 **/
-Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[])
+Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][200])
 {
 	Aviao Aviao;
 
 	Aviao.PID = PID == -1 ? GetCurrentProcessId() : PID;
 	Aviao.maxPassag = maxPassag;
 	Aviao.coordenadasPorSegundo = coordenadasPorSegundo;
-	Aviao.siglaAeroportoPartida = dadosAeroporto[0];
-	Aviao.siglaAeroportoDestino = dadosAeroporto[1];
+	Aviao.siglaAeroportoPartida = newString(dadosAeroporto[0]);
+	Aviao.siglaAeroportoDestino = newString(dadosAeroporto[1]);
 
 	return Aviao;
 }

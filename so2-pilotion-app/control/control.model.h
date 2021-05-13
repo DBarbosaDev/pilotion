@@ -23,7 +23,7 @@ typedef struct PassagsLinkedList {
 } PassagsLinkedList;
 
 typedef struct AviaoLinkedList {
-	AviaoModel* aviao;
+	Aviao* aviao;
 	struct AviaoLinkedList* prox;
 } AviaoLinkedList;
 

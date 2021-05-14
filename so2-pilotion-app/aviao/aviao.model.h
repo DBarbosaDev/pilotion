@@ -18,7 +18,8 @@ typedef struct Aviao
 	TCHAR *nomeAeroportoDestino;
 	TCHAR *siglaAeroportoDestino;
 
-	Passageiro *passageiros[MAXPASSAG];
+	//Passageiro *passageiros[MAXPASSAG];
+	int passageiros;
 
 } Aviao;
 

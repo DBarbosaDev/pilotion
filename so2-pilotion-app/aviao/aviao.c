@@ -5,15 +5,39 @@
 #include <tchar.h>
 #include <windows.h>
 #include <fcntl.h>
+#include "aviao.model.h"
 
 int _tmain()
-{    
-    #ifdef UNICODE
-        _setmode(_fileno(stdin), _O_WTEXT);
-        _setmode(_fileno(stdout), _O_WTEXT);
-        _setmode(_fileno(stderr), _O_WTEXT);
-    #endif
-    wprintf(_T("Olá Mundo de avião"));
+{
+#ifdef UNICODE
+    _setmode(_fileno(stdin), _O_WTEXT);
+    _setmode(_fileno(stdout), _O_WTEXT);
+    _setmode(_fileno(stderr), _O_WTEXT);
+#endif
+
+    int maxPassag = 0;
+    TCHAR coordenadasPorSegundo = "\0";
+    TCHAR dados[2][200];
+    for (size_t i = 0; i < 2; i++)
+        memset(dados[i], 0, 200);
+    
+    _tprintf(_TEXT("novoaviao;\n\n"));
+    _tprintf(_TEXT("Numero maximo de passageiros;\n"));
+    wscanf_s(_T("%d"), &maxPassag, 200);
+
+    _tprintf(_TEXT("Coordenadas por segundo;\n"));
+    wscanf_s(_T("%4s"), &coordenadasPorSegundo, 200);
+
+    _tprintf(_TEXT("siglaAeroportoPartida;\n"));
+    wscanf_s(_T("%199s"), &dados[0], 200);
+
+    _tprintf(_TEXT("siglaAeroportoDestino;\n"));
+    wscanf_s(_T("%199s"), &dados[1], 200);
+
+    Aviao nAviao = novoAviao(0, maxPassag, coordenadasPorSegundo, dados);
+    wprintf(_T("%d"), nAviao.maxPassag);
+    wprintf(_T("%s"), nAviao.siglaAeroportoDestino);
+    wprintf(_T("%s"), nAviao.siglaAeroportoPartida);
 
     return 0;
 }
@@ -21,7 +45,7 @@ int _tmain()
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
+// Tips for Getting Started:
 //   1. Use the Solution Explorer window to add/manage files
 //   2. Use the Team Explorer window to connect to source control
 //   3. Use the Output window to see build output and other messages

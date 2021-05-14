@@ -16,6 +16,9 @@
     <Filter Include="Source Files\models">
       <UniqueIdentifier>{b2933f46-d029-4f10-9971-b5e8e79340ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\helpers">
+      <UniqueIdentifier>{ce7b1c67-1077-43dd-9a2e-b92086b53a5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aviao.c">
@@ -27,6 +30,9 @@
     <ClCompile Include="passageiro.model.c">
       <Filter>Source Files\models</Filter>
     </ClCompile>
+    <ClCompile Include="..\control\main.helper.c">
+      <Filter>Source Files\helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aviao.model.h">
@@ -34,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="passageiro.model.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\control\main.helper.h">
+      <Filter>Source Files\helpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

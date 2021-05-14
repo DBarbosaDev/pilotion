@@ -23,16 +23,16 @@ Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dados
 /**
  * @inheritDoc
 **/
-Passageiro *embarcarPassageiro(Passageiro *passageiro, Aviao *aviao)
-{
-	int capacidade = sizeof(aviao->passageiros) / sizeof(Passageiro);
-	if (aviao->maxPassag == capacidade)
-	{
-		// enviar mensagem para avisar que a maxima capacidade foi atingida
-	}
-
-	if (passageiro->siglaAeroportoDestino == aviao->siglaAeroportoPartida)
-		aviao->passageiros[capacidade - 1] = passageiro;
-
-	return passageiro;
-}
+//Passageiro *embarcarPassageiro(Passageiro *passageiro, Aviao *aviao)
+//{
+//	int capacidade = sizeof(aviao->passageiros) / sizeof(Passageiro);
+//	if (aviao->maxPassag == capacidade)
+//	{
+//		// enviar mensagem para avisar que a maxima capacidade foi atingida
+//	}
+//
+//	if (passageiro->siglaAeroportoDestino == aviao->siglaAeroportoPartida)
+//		aviao->passageiros[capacidade - 1] = passageiro;
+//
+//	return passageiro;
+//}

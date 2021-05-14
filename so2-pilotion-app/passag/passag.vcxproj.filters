@@ -16,6 +16,9 @@
     <Filter Include="Source Files\models">
       <UniqueIdentifier>{5eb697c0-f225-4eb0-87f6-f0fff26dbde5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\helpers">
+      <UniqueIdentifier>{684958c0-8b6b-48a0-816c-d8a59151b176}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="passag.c">
@@ -24,10 +27,16 @@
     <ClCompile Include="passag.model.c">
       <Filter>Source Files\models</Filter>
     </ClCompile>
+    <ClCompile Include="..\control\main.helper.c">
+      <Filter>Source Files\helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="passag.model.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\control\main.helper.h">
+      <Filter>Source Files\helpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

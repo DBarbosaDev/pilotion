@@ -22,19 +22,21 @@ AirportModel* createAirport(AirportModel* AirportsList, TCHAR* name, int positio
 	Airport->prox = NULL;
 
 	if (AirportsList == NULL) {
+		wprintf(_T("\n>> Aeroporto criado com sucesso\n"));
+
 		AirportsList = Airport;
 		return AirportsList;
 	}
 
 	while (1) {
 		if (!wcscmp(auxAirportsList->name, name)) {
-			wprintf(_T("Já existe um aeroporto com o nome %s\n"), name);
+			wprintf(_T("Já existe um aeroporto com o nome %s. Tente novamente\n"), name);
 			free(Airport);
 			return NULL;
 		}
 
 		if (!isNotInAirportMaxRadius(auxAirportsList->positionX, auxAirportsList->positionY, positionX, positionY)) {
-			wprintf(_T("Existe um aeroporto(%s) num raio de 10 posições\n"), auxAirportsList->name);
+			wprintf(_T("O aeroporto [%s] encontra-se num raio de 10 posições. Tente outras coordenadas.\n"), auxAirportsList->name);
 			free(Airport);
 			return NULL;
 		}
@@ -49,7 +51,31 @@ AirportModel* createAirport(AirportModel* AirportsList, TCHAR* name, int positio
 
 	auxAirportsList->prox = Airport;
 
+	wprintf(_T("\n>> Aeroporto criado com sucesso\n"));
+
 	return AirportsList;
+}
+
+void listarAeroportos(AirportModel* AirportsList) {
+	AirportModel* auxAirportList = AirportsList;
+
+	wprintf(_T("\n>> Aeroportos:\n"));
+
+	if (auxAirportList == NULL) {
+		wprintf(_T(">> Ainda não existem aeroportos inseridos no sistema.\n"));
+		return;
+	}
+
+	while (auxAirportList != NULL) {
+		wprintf(
+			_T("Nome:%s\t\t| coordenadas:(%i, %i)\n"),
+			auxAirportList->name,
+			auxAirportList->positionX,
+			auxAirportList->positionY
+		);
+
+		auxAirportList = auxAirportList->prox;
+	}
 }
 
 AirportModel* getAirportByName(AirportModel* AirportsList, TCHAR* name) {

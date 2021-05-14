@@ -139,10 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\control\main.helper.c" />
     <ClCompile Include="passag.model.c" />
     <ClCompile Include="passag.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\control\main.helper.h">
+      <FileType>CppHeader</FileType>
+    </ClInclude>
     <ClInclude Include="passag.model.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

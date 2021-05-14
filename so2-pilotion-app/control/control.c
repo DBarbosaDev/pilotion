@@ -39,7 +39,8 @@ int setAppRegistryVars() {
         && setRegistryVar(REGISTRY_TMP_AVIAO_PATH, REGISTRY_TMP_AVIAO_READABLE_SHARED_MEMORY, sharedMemoryWR);
 }
 
-// TODO get the Registry var REGISTRY_TMP_CONTROL_STATUS and check if the program is already running
+// TODO get the Registry var REGISTRY_TMP_CONTROL_STATUS and check if the program is already running (DEPRECATED)
+// TODO This should be checked by the namedpipe existance or the shared memory instance existance
 void checkControlStatus() {
     TCHAR* appStatus = getRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS);
 
@@ -73,18 +74,68 @@ void bootstrapInitialSettings() {
     }
 }
 
+void pedirDadosECriarAeroporto(ControlModel* Control) {
+    TCHAR nome[INPUT_BUFF_SIZE] = _T("\0");
+    int posicaoX = 0, posicaoY = 0;
+
+    wprintf(_T("\nInserir dados do aeroporto\n"));
+
+    wprintf(_T("Nome: ")); fflush(stdout);
+    wscanf_s(_T("%99s"), nome, INPUT_BUFF_SIZE);
+
+    wprintf(_T("Posição X: ")); fflush(stdout);
+    wscanf_s(_T("%i"), &posicaoX, sizeof(int));
+
+    wprintf(_T("Posição Y: ")); fflush(stdout);
+    wscanf_s(_T("%i"), &posicaoY, sizeof(int));
+    
+    if (Control->AirportsList == NULL) {
+        Control->AirportsList = createAirport(NULL, newString(nome), posicaoX, posicaoY);
+        return;
+    }
+
+    createAirport(Control->AirportsList, newString(nome), posicaoX, posicaoY);
+}
+
+void apresentarMenu() {
+    system("cls");
+
+    wprintf(_T("===== Programa Control =====\n"));
+    wprintf(_T("Escolha uma das opções seguintes:\n"));
+    wprintf(_T("\ta - Criar um aeroporto;\n"));
+    wprintf(_T("\tb - Listar aeroportos disponiveis;\n"));
+    wprintf(_T("\t0 - Encerrar programa\n"));
+
+    wprintf(_T("opção: ")); fflush(stdout);
+}
+
+void tratarComandos(TCHAR* comando, ControlModel* Control) {
+    if (!wcscmp(comando, _T("a"))) {
+        pedirDadosECriarAeroporto(Control);
+    }
+    else if (!wcscmp(comando, _T("b"))) {
+        listarAeroportos(Control->AirportsList);
+    }
+    else if (!wcscmp(comando, _T("0"))) {
+        exit(0);
+    }
+}
+
 void _tmain() {
     bootstrapInitialSettings();
 
     TCHAR command[INPUT_BUFF_SIZE] = _T("\0");
     ControlModel Control = initControlModel();
-    
-    /* Control.AirportsList = createAirport(NULL, newString(_T("Aeroporto2")), 0, 0);
-    createAirport(Control.AirportsList, newString(_T("Aeroporto3")), 0, 10); */
 
     // routine logic goes here
-    while (wcscmp(command, _T("exit"))) {
-        wscanf_s(_T("%4s"), command, INPUT_BUFF_SIZE);
+    while (1) {
+        apresentarMenu();
+
+        wscanf_s(_T("%99s"), command, INPUT_BUFF_SIZE);
+
+        tratarComandos(command, &Control);
+
+        system("pause");
     }
     // -----------------------
 

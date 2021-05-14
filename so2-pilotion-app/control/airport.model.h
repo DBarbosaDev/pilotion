@@ -15,4 +15,6 @@ int isNotInAirportMaxRadius(int positionX, int positionY, int newPositionX, int 
 
 AirportModel* createAirport(AirportModel* AirportsList, TCHAR* name, int positionX, int positionY);
 
+void listarAeroportos(AirportModel* AirportsList);
+
 AirportModel* getAirportByName(AirportModel* AirportsList, TCHAR* name);

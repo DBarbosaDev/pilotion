@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include "passageiro.model.h"
+#include <SO2_TP_DLL_2021.h>
 
 
 #define MAXPASSAG 10

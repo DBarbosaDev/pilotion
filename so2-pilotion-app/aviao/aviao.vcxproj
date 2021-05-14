@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Users\alexa\Workspace\pilotion\so2-pilotion-app\so2dll\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\alexa\Workspace\pilotion\so2-pilotion-app\so2dll;$(IncludePath)</IncludePath>
+    <LibraryPath>$(MSBuildProjectDirectory)\so2dll\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(MSBuildProjectDirectory)\so2dll;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -155,11 +155,6 @@
     </ClInclude>
     <ClInclude Include="aviao.model.h" />
     <ClInclude Include="passageiro.model.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\control\control.vcxproj">
-      <Project>{6ceab116-ae44-455a-a00b-64059bafca5a}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

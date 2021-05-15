@@ -18,5 +18,7 @@ ControlModel initControlModel() {
 	Control.PendingAirplanesStack = NULL;
 	Control.pendingAirplanesStackLength = 0;
 
+	Control.ApplicationHandles.connectionsRequestsThread = NULL;
+
 	return Control;
 }

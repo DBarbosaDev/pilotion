@@ -40,7 +40,6 @@ int setRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME, TCHAR* valueData) {
     RegCloseKey(registerKey);
 
     return 1;
-    
 }
 
 TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME) {
@@ -51,7 +50,7 @@ TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME) {
     if (requisitionStatus != ERROR_SUCCESS) {
 
         if (requisitionStatus == ERROR_FILE_NOT_FOUND) {
-            setRegistryVar(PATH, VALUE_NAME, "0");
+            setRegistryVar(PATH, VALUE_NAME, _T("0"));
             requisitionStatus = RegGetValue(HKEY_CURRENT_USER, PATH, VALUE_NAME, RRF_RT_REG_SZ, NULL, NULL, &valueDataSize);
         }
         else {
@@ -76,4 +75,10 @@ TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME) {
     }
 
     return valueData;
+}
+
+int getRegistryVarInt(TCHAR* PATH, TCHAR* VALUE_NAME) {
+    TCHAR* registryValue = getRegistryVar(PATH, VALUE_NAME);
+
+    return _wtoi(registryValue, NULL, 10);
 }

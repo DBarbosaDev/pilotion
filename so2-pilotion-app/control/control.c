@@ -24,19 +24,12 @@ int WINAPI ConsoleHandler(DWORD CEvent) {
 }
 
 int setAppRegistryVars() {
-    // TODO change these names to more objective\descritive ones
-    TCHAR sharedMemoryWR[] = _T("Pilotion\\sharedMemoryWR");
-    TCHAR sharedMemoryRW[] = _T("Pilotion\\sharedMemoryRW");
-
     return
-        setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("1"))
-        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_PLANES, _T("10"))
-        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS, _T("30"))
-        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_NAMEDPIPE, _T("\\\\.\\pipe\\PilotionControlNamedPipe\0"))
-        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_WRITABLE_SHARED_MEMORY, sharedMemoryWR)
-        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_READABLE_SHARED_MEMORY, sharedMemoryRW)
-        && setRegistryVar(REGISTRY_TMP_AVIAO_PATH, REGISTRY_TMP_AVIAO_WRITABLE_SHARED_MEMORY, sharedMemoryRW)
-        && setRegistryVar(REGISTRY_TMP_AVIAO_PATH, REGISTRY_TMP_AVIAO_READABLE_SHARED_MEMORY, sharedMemoryWR);
+        setRegistryVar(REGISTRY_PATH, REGISTRY_SHARED_MEMORY_STACK_PLANES, REGISTRY_SHARED_MEMORY_STACK_PLANES_VALUE)
+        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("1"))
+        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_PLANES, _T("10\0"))
+        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS, _T("10\0"))
+        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_NAMEDPIPE, _T("\\\\.\\pipe\\PilotionControlNamedPipe\0"));
 }
 
 // TODO get the Registry var REGISTRY_TMP_CONTROL_STATUS and check if the program is already running (DEPRECATED)
@@ -74,7 +67,32 @@ void bootstrapInitialSettings() {
     }
 }
 
+void instanciarMemoriaPartilhada(ControlModel* Control) {
+    int numeroMaximoAvioes = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS);
+    
+    Control->ApplicationHandles.planesStackSharedMemory = CreateFileMapping(
+        INVALID_HANDLE_VALUE,
+        NULL,
+        PAGE_READWRITE,
+        0,
+        sizeof(Aviao) * numeroMaximoAvioes,
+        REGISTRY_SHARED_MEMORY_STACK_PLANES_VALUE);
+
+    if (Control->ApplicationHandles.planesStackSharedMemory == NULL) {
+        _tprintf(TEXT("Could not create file mapping object (%d).\n"),
+            GetLastError());
+        return;
+    }
+}
+
 void pedirDadosECriarAeroporto(ControlModel* Control) {
+    int numeroMaximoAvioes = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS);
+
+    if (numeroMaximoAvioes == Control->airportsListLength) {
+        wprintf(_T("\n>> O número máximo de aeroportos já foi atingido.\n"));
+        return;
+    }
+
     TCHAR nome[INPUT_BUFF_SIZE] = _T("\0");
     int posicaoX = 0, posicaoY = 0;
 
@@ -91,10 +109,11 @@ void pedirDadosECriarAeroporto(ControlModel* Control) {
     
     if (Control->AirportsList == NULL) {
         Control->AirportsList = createAirport(NULL, newString(nome), posicaoX, posicaoY);
+        Control->airportsListLength += Control->AirportsList != NULL ? 1 : 0;
         return;
     }
 
-    createAirport(Control->AirportsList, newString(nome), posicaoX, posicaoY);
+    Control->airportsListLength += createAirport(Control->AirportsList, newString(nome), posicaoX, posicaoY) != NULL ? 1 : 0;
 }
 
 void apresentarMenu() {
@@ -112,13 +131,17 @@ void apresentarMenu() {
 void tratarComandos(TCHAR* comando, ControlModel* Control) {
     if (!wcscmp(comando, _T("a"))) {
         pedirDadosECriarAeroporto(Control);
+        return;
     }
-    else if (!wcscmp(comando, _T("b"))) {
+    if (!wcscmp(comando, _T("b"))) {
         listarAeroportos(Control->AirportsList);
+        return;
     }
-    else if (!wcscmp(comando, _T("0"))) {
+    if (!wcscmp(comando, _T("0"))) {
         exit(0);
     }
+
+    wprintf(_T("\n>> Comando indisponivel.\n"));
 }
 
 void _tmain() {

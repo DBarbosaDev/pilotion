@@ -15,6 +15,7 @@ typedef struct ApplicationHandles {
 	WorkerThreadHandle* passagWorkerThreadsHandles;
 	HANDLE keepAliveThread;
 	HANDLE connectionsRequestsThread;
+	HANDLE planesStackSharedMemory;
 } ApplicationHandles;
 
 typedef struct PassagsLinkedList {

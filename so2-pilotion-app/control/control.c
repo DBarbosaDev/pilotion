@@ -1,11 +1,14 @@
+#include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
 #include <fcntl.h>
-#include <windows.h>
+#include <conio.h>
 
 #include "constants.h"
 #include "main.helper.h"
 #include "control.model.h"
+
+#include "../aviao/aviao.model.h"
 
 #define INPUT_BUFF_SIZE 100
 
@@ -117,7 +120,7 @@ void pedirDadosECriarAeroporto(ControlModel* Control) {
 }
 
 void apresentarMenu() {
-    system("cls");
+    //system("cls");
 
     wprintf(_T("===== Programa Control =====\n"));
     wprintf(_T("Escolha uma das opções seguintes:\n"));
@@ -147,8 +150,13 @@ void tratarComandos(TCHAR* comando, ControlModel* Control) {
 void _tmain() {
     bootstrapInitialSettings();
 
+    int numeroMaximoAvioes = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS);
     TCHAR command[INPUT_BUFF_SIZE] = _T("\0");
     ControlModel Control = initControlModel();
+
+    Aviao* planesStack;
+
+    instanciarMemoriaPartilhada(&Control);
 
     // routine logic goes here
     while (1) {
@@ -159,6 +167,10 @@ void _tmain() {
         tratarComandos(command, &Control);
 
         system("pause");
+
+        planesStack = getSharedMemoryPlanesStack(Control.ApplicationHandles.planesStackSharedMemory, numeroMaximoAvioes);
+        Aviao* test = planesStack+1;
+        Aviao* test2 = planesStack + 2;
     }
     // -----------------------
 

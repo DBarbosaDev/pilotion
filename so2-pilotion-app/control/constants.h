@@ -3,7 +3,7 @@
 #define REGISTRY_PATH _T("SOFTWARE\\Pilotion")
 
 #define REGISTRY_SHARED_MEMORY_STACK_PLANES _T("PlanesStackName")
-#define REGISTRY_SHARED_MEMORY_STACK_PLANES_VALUE _T("Pilotion\\PlanesStack")
+#define REGISTRY_SHARED_MEMORY_STACK_PLANES_VALUE _T("Global\PlanesStack")
 
 #define REGISTRY_TMP_CONTROL_PATH _T("SOFTWARE\\Pilotion\\tmp\\control\\")
 #define REGISTRY_TMP_CONTROL_STATUS _T("status")

@@ -14,10 +14,8 @@ typedef struct Aviao
 	int maxPassag;
 
 	int coordenadasPorSegundo;
-	TCHAR *nomeAeroportoPartida;
-	TCHAR *siglaAeroportoPartida;
-	TCHAR *nomeAeroportoDestino;
-	TCHAR *siglaAeroportoDestino;
+	TCHAR siglaAeroportoPartida[200];
+	TCHAR siglaAeroportoDestino[200];
 
 	//Passageiro *passageiros[MAXPASSAG];
 	int passageiros;

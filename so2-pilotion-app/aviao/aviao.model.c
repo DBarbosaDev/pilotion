@@ -14,8 +14,11 @@ Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dados
 	Aviao.PID = PID == -1 ? GetCurrentProcessId() : PID;
 	Aviao.maxPassag = maxPassag;
 	Aviao.coordenadasPorSegundo = coordenadasPorSegundo;
-	Aviao.siglaAeroportoPartida = newString(dadosAeroporto[0]);
-	Aviao.siglaAeroportoDestino = newString(dadosAeroporto[1]);
+
+	memset(Aviao.siglaAeroportoPartida, 0, sizeof(Aviao.siglaAeroportoPartida));
+	wcscpy_s(Aviao.siglaAeroportoPartida, 200, dadosAeroporto[0]);
+	memset(Aviao.siglaAeroportoDestino, 0, sizeof(Aviao.siglaAeroportoDestino));
+	wcscpy_s(Aviao.siglaAeroportoDestino, 200, dadosAeroporto[1]);
 
 	return Aviao;
 }

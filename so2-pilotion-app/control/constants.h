@@ -1,17 +1,16 @@
 #pragma once
 
+#define SHARED_MEMORY_STACK_PLANES _T("Global\PlanesStack")
 #define SHARED_MEMORY_STACK_WRITE_INDEX _T("Global\PlanesStackLastLength")
 #define SHARED_MEMORY_STACK_WRITE_INDEX_MUTEX _T("Global\PlanesStackLastLengthMutex")
+#define SHARED_MEMORY_STACK_READ_INDEX _T("Global\planesStackIndexToRead")
+#define SHARED_MEMORY_STACK_READ_INDEX_MUTEX _T("Global\planesStackIndexToReadMutex")
+#define SHARED_MEMORY_STACK_LENGTH_VALUE _T("Global\planesStackLength")
+#define SHARED_MEMORY_STACK_SEMAPHORE _T("Global\planesStackIndexToReadMutex")
 
-#define SHARED_MEMORY_STACK_READ_INDEX _T("Global\PlanesStackLastFreeIndex")
-#define SHARED_MEMORY_STACK_READ_INDEX_MUTEX _T("Global\PlanesStackLastFreeIndexMutex")
-
-#define SHARED_MEMORY_STACK_SEMAPHORE _T("Global\PlanesStackLastFreeIndexMutex")
+#define EVENT_ALERT_PLANE_CONNECTION _T("Global\alertPlaneConnection")
 
 #define REGISTRY_PATH _T("SOFTWARE\\Pilotion")
-
-#define REGISTRY_SHARED_MEMORY_STACK_PLANES _T("PlanesStackName")
-#define REGISTRY_SHARED_MEMORY_STACK_PLANES_VALUE _T("Global\PlanesStack")
 
 #define REGISTRY_TMP_CONTROL_PATH _T("SOFTWARE\\Pilotion\\tmp\\control\\")
 #define REGISTRY_TMP_CONTROL_STATUS _T("status")

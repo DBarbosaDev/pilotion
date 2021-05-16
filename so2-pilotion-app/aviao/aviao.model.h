@@ -39,6 +39,7 @@ typedef struct Aviao
 	TCHAR siglaAeroportoPartida[200];
 	TCHAR siglaAeroportoDestino[200];
 	
+	int nrMaximoDeAvioes;
 	int estadoConexaoComControl;
 
 	Eventos eventos;

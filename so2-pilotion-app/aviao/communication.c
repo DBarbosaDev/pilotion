@@ -8,7 +8,7 @@ Aviao* adicionaAviaoToStack(Aviao* aviao, HANDLE hMapFile) {
         FILE_MAP_ALL_ACCESS,  // read/write permission
         0,
         0,
-        sizeof(Aviao) * 10);
+        sizeof(Aviao) * aviao->nrMaximoDeAvioes);
 
     if (pBuf == NULL)
     {

@@ -19,6 +19,9 @@
     <Filter Include="Source Files\helpers">
       <UniqueIdentifier>{ce7b1c67-1077-43dd-9a2e-b92086b53a5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\communication">
+      <UniqueIdentifier>{2578a2a9-50d5-4fee-a790-40ce5fb368b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aviao.c">
@@ -33,6 +36,9 @@
     <ClCompile Include="..\control\main.helper.c">
       <Filter>Source Files\helpers</Filter>
     </ClCompile>
+    <ClCompile Include="communication.c">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aviao.model.h">
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="..\control\main.helper.h">
       <Filter>Source Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="communication.h">
+      <Filter>Source Files\communication</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

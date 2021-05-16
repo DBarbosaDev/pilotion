@@ -2,9 +2,7 @@
 
 #include <windows.h>
 #include <tchar.h>
-#include <process.h>
 #include "passageiro.model.h"
-#include "../control/main.helper.h"
 #include "SO2_TP_DLL_2021\SO2_TP_DLL_2021.h"
 
 #define MAXPASSAG 10
@@ -25,11 +23,11 @@ typedef struct Aviao
 } Aviao;
 
 /**
- *	Ordem obrigatoria de envio de dados no metodo novoAviao
+ *	Ordem obrigat�ria de envio de dados no m�todo novoAviao
  *	dadosAeroporto[0] = sigla aeroporto de partida
  *  dadosAeroporto[1] = sigla do aeroporto de destino
 **/
-Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][BUFFER_SIZE]);
+Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR *dadosAeroporto[]);
 
 /**
  *	Embarcar um passageiro no respetivo aviao

@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include "aviao.model.h"
 #include "../control/constants.h"
+#include "communication.h"
 
 int _tmain()
 {
@@ -55,33 +56,11 @@ int _tmain()
         return 1;
     }
 
-    pBuf = (Aviao*) MapViewOfFile(hMapFile, // handle to map object
-        FILE_MAP_ALL_ACCESS,  // read/write permission
-        0,
-        0,
-        sizeof(Aviao) * 10);
-
-    if (pBuf == NULL)
-    {
-        _tprintf(TEXT("Could not map view of file (%d).\n"),
-            GetLastError());
-
-        CloseHandle(hMapFile);
-
-        return 1;
-    }
-
-    Aviao* pnAviao = &nAviao;
-
-    CopyMemory(pBuf, pnAviao, sizeof(Aviao));
-
-    //CopyMemory(pBuf, nAviao, 10)
-
-    UnmapViewOfFile(pBuf);
+    pBuf = adicionaAviaoToStack(&nAviao, hMapFile);
 
     CloseHandle(hMapFile);
 
-    //aviaoViaja(0, 0, 1, 1);
+    aviaoViaja(0, 0, 1, 1);
 
     system("pause");
     return 0;

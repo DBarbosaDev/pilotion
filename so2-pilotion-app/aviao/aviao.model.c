@@ -1,5 +1,7 @@
 #pragma once
 
+#include <process.h>
+#include "../control/main.helper.h"
 #include "aviao.model.h"
 
 /**
@@ -24,7 +26,8 @@ Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dados
 
 int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* next_y) 
 {
-	int movimento = move(cur_x, cur_y, final_x, final_y, next_x, next_y);
+	int *proxCoord[] = { 0,0 };
+	int movimento = move(cur_x, cur_y, final_x, final_y, &proxCoord[0], &proxCoord[1]);
 	if (movimento == 0)
 		// procurar alternativas de deslocação (duas alternativas)
 		return 0;

@@ -1,9 +1,12 @@
 #pragma once
 
 #include <process.h>
+#include <strsafe.h>
+#include "threads_routines.h"
+#include "aviao.model.h"
 #include "../control/constants.h"
 #include "../control/main.helper.h"
-#include "aviao.model.h"
+#include "../control/communication.model.h"
 
 
 /**
@@ -18,14 +21,49 @@ Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dados
 	aviao.coordenadasPorSegundo = coordenadasPorSegundo;
 	aviao.coordenadasAtuais[0] = 0;
 	aviao.coordenadasAtuais[1] = 0;
+
 	memset(aviao.siglaAeroportoPartida, 0, sizeof(aviao.siglaAeroportoPartida));
-	wcscpy_s(aviao.siglaAeroportoPartida, 200, dadosAeroporto[0]);
+	wcscpy_s(aviao.siglaAeroportoPartida, BUFFER_SIZE, dadosAeroporto[0]);
 	memset(aviao.siglaAeroportoDestino, 0, sizeof(aviao.siglaAeroportoDestino));
-	wcscpy_s(aviao.siglaAeroportoDestino, 200, dadosAeroporto[1]);
+	wcscpy_s(aviao.siglaAeroportoDestino, BUFFER_SIZE, dadosAeroporto[1]);
+
+	aviao.estadoConexaoComControl = CONNECTION_REQUEST;
+
+	memset(aviao.eventos.nomeEventoAeroportosInvalidos, 0, sizeof(aviao.eventos.nomeEventoAeroportosInvalidos));
+	memset(aviao.eventos.nomeEventoConfirmacaoConexao, 0, sizeof(aviao.eventos.nomeEventoConfirmacaoConexao));
+	memset(aviao.eventos.nomeEventoParaSair, 0, sizeof(aviao.eventos.nomeEventoParaSair));
+
+	iniciarEventos(&aviao);
+	iniciarThreads(&aviao);
 
 	return aviao;
 }
 
+void iniciarEventos(Aviao* aviao) {
+	TCHAR* stringPID = malloc(sizeof(TCHAR) * 10);
+	_itow_s(aviao->PID, stringPID, sizeof(TCHAR) * 10, 10);
+	
+	wcscpy_s(aviao->eventos.nomeEventoAeroportosInvalidos, BUFFER_SIZE, _T("Global\\nomeEventoAeroportosInvalidos"));
+	StringCchCat(aviao->eventos.nomeEventoAeroportosInvalidos, BUFFER_SIZE, stringPID);
+
+	wcscpy_s(aviao->eventos.nomeEventoConfirmacaoConexao, BUFFER_SIZE, _T("Global\\nomeEventoConfirmacaoConexao"));
+	StringCchCat(aviao->eventos.nomeEventoConfirmacaoConexao, BUFFER_SIZE, stringPID);
+	
+	wcscpy_s(aviao->eventos.nomeEventoParaSair, BUFFER_SIZE, _T("Global\\nomeEventoParaSair"));
+	StringCchCat(aviao->eventos.nomeEventoParaSair, BUFFER_SIZE, stringPID);
+	
+	memset(stringPID, 0, sizeof(stringPID));
+
+	aviao->eventos.handleEventoConfirmacaoConexao = CreateEvent(NULL, TRUE, FALSE, aviao->eventos.nomeEventoConfirmacaoConexao);
+	aviao->eventos.handleEventoAeroportosInvalidos = CreateEvent(NULL, TRUE, FALSE, aviao->eventos.nomeEventoAeroportosInvalidos);
+	aviao->eventos.handleEventoParaSair = CreateEvent(NULL, TRUE, FALSE, aviao->eventos.nomeEventoParaSair);
+}
+
+void iniciarThreads(Aviao* aviao) {
+	aviao->Threads.hAeroportosInvalidos = CreateThread(NULL, 0, routinaAeroportosInvalidos, aviao, 0, NULL);
+	aviao->Threads.hConfirmacaoConexao = CreateThread(NULL, 0, routinaConfirmacaoConexao, aviao, 0, NULL);
+	aviao->Threads.hControloDeSaida = CreateThread(NULL, 0, routinaControloDeSaida, aviao, 0, NULL);
+}
 
 int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* next_y) 
 {
@@ -43,7 +81,7 @@ int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* 
 		return 1;
 	}
 
-	Aviao* listaAvioes = getSharedMemoryPlanesStack(hMapFile, 10);
+	Aviao* listaAvioes = getPlanesStackPointer(hMapFile, 10);
 
 	while (proxCoord[0] != final_x && proxCoord[1] != final_y)
 	{

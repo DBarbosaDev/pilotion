@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include "aviao.model.h"
 #include "../control/constants.h"
+#include "communication.h"
+#include "ui.console.h"
 
 int _tmain()
 {
@@ -22,18 +24,7 @@ int _tmain()
     for (size_t i = 0; i < 2; i++)
         memset(dados[i], 0, 200);
     
-    _tprintf(_TEXT("novoaviao;\n\n"));
-    _tprintf(_TEXT("Numero maximo de passageiros;\n"));
-    wscanf_s(_T("%d"), &maxPassag);
-
-    _tprintf(_TEXT("Coordenadas por segundo;\n"));
-    wscanf_s(_T("%d"), &coordenadasPorSegundo);
-
-    _tprintf(_TEXT("siglaAeroportoPartida;\n"));
-    wscanf_s(_T("%199s"), &dados[0], 200);
-
-    _tprintf(_TEXT("siglaAeroportoDestino;\n"));
-    wscanf_s(_T("%199s"), &dados[1], 200);
+    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
 
     Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);
     wprintf(_T("%d"), nAviao.maxPassag);
@@ -55,33 +46,11 @@ int _tmain()
         return 1;
     }
 
-    pBuf = (Aviao*) MapViewOfFile(hMapFile, // handle to map object
-        FILE_MAP_ALL_ACCESS,  // read/write permission
-        0,
-        0,
-        sizeof(Aviao) * 10);
-
-    if (pBuf == NULL)
-    {
-        _tprintf(TEXT("Could not map view of file (%d).\n"),
-            GetLastError());
-
-        CloseHandle(hMapFile);
-
-        return 1;
-    }
-
-    Aviao* pnAviao = &nAviao;
-
-    CopyMemory(pBuf, pnAviao, sizeof(Aviao));
-
-    //CopyMemory(pBuf, nAviao, 10)
-
-    UnmapViewOfFile(pBuf);
+    pBuf = adicionaAviaoToStack(&nAviao, hMapFile);
 
     CloseHandle(hMapFile);
 
-    //aviaoViaja(0, 0, 1, 1);
+    aviaoViaja(0, 0, 10, 10);
 
     system("pause");
     return 0;

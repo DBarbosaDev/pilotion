@@ -13,13 +13,14 @@ typedef struct WorkerThreadHandle {
 
 typedef struct SharedMemoryHandles {
 	HANDLE planesStack;
+	HANDLE planesStackLength;
 	HANDLE planesStackSemaphore;
 
-	HANDLE planesStackLength;
-	HANDLE planesStackLengthMutex;
+	HANDLE planesStackIndexToWrite;
+	HANDLE planesStackIndexToWriteMutex;
 
-	HANDLE planesStackLastFreeIndex;
-	HANDLE planesStackLastFreeIndexMutex;
+	HANDLE planesStackIndexToRead;
+	HANDLE planesStackIndexToReadMutex;
 } SharedMemoryHandles;
 
 typedef struct SharedMemoryThreads {
@@ -44,9 +45,11 @@ typedef struct ControlModel {
 
 	AirportModel* AirportsList;
 	int airportsListLength;
+	int maxAirportsLength;
 
 	Aviao* PlanesList;
 	int planesListLength;
+	int maxPlanesLength;
 
 	PassagsLinkedList* PassagsList;
 	int passagsListLength;
@@ -56,3 +59,8 @@ typedef struct ControlModel {
 } ControlModel;
 
 ControlModel initControlModel();
+
+void instanciarMemoriasPartilhadas(ControlModel* Control);
+void instanciarIndicesDaMemoriaPartilhada(ControlModel* Control);
+void instanciarMutexesESemaforo(ControlModel* Control);
+void instanciarThreadsControloDeAvioes(ControlModel* Control);

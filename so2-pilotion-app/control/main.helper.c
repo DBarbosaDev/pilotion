@@ -95,3 +95,35 @@ Aviao* getPlanesStackPointer(HANDLE handle, int numberMaxOfPlanes) {
     return stack;
 }
 
+int getIntValueFromSharedMemory(TCHAR* instanceName) {
+    HANDLE hMapFile;
+    int* pBuf;
+    int value;
+
+    hMapFile = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, instanceName);               
+
+    if (hMapFile == NULL)
+    {
+        _tprintf(TEXT("Could not create file mapping object (%d).\n"),
+            GetLastError());
+        exit(1);
+    }
+    pBuf = (int*)MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(int));
+
+    if (pBuf == NULL) {
+        _tprintf(TEXT("Could not map view of file (%d).\n"),
+            GetLastError());
+
+        CloseHandle(hMapFile);
+
+        exit(1);
+    }
+
+    value = *pBuf;
+
+    UnmapViewOfFile(pBuf);
+
+    CloseHandle(hMapFile);
+
+    return value;
+}

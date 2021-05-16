@@ -21,6 +21,7 @@ Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dados
 	aviao.coordenadasPorSegundo = coordenadasPorSegundo;
 	aviao.coordenadasAtuais[0] = 0;
 	aviao.coordenadasAtuais[1] = 0;
+	aviao.nrMaximoDeAvioes = getIntValueFromSharedMemory(SHARED_MEMORY_STACK_LENGTH_VALUE);
 
 	memset(aviao.siglaAeroportoPartida, 0, sizeof(aviao.siglaAeroportoPartida));
 	wcscpy_s(aviao.siglaAeroportoPartida, BUFFER_SIZE, dadosAeroporto[0]);
@@ -73,7 +74,7 @@ int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* 
 	hMapFile = OpenFileMapping(
 		FILE_MAP_ALL_ACCESS,   // read/write access
 		FALSE,                 // do not inherit the name
-		REGISTRY_SHARED_MEMORY_STACK_PLANES_VALUE);               // name of mapping object
+		SHARED_MEMORY_STACK_PLANES);               // name of mapping object
 
 	if (hMapFile == NULL)
 	{

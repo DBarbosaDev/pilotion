@@ -30,7 +30,7 @@ Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dados
 int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* next_y) 
 {
 	HANDLE hMapFile;
-	int proxCoord[] = { cur_x,cur_y };
+	int proxCoord[] = { cur_x, cur_y };
 
 	hMapFile = OpenFileMapping(
 		FILE_MAP_ALL_ACCESS,   // read/write access
@@ -45,7 +45,7 @@ int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* 
 
 	Aviao* listaAvioes = getSharedMemoryPlanesStack(hMapFile, 10);
 
-	while (proxCoord[0] != final_x && proxCoord[2] != final_y)
+	while (proxCoord[0] != final_x && proxCoord[1] != final_y)
 	{
 		for (size_t i = 0; i < 10; i++)
 		{
@@ -64,6 +64,7 @@ int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* 
 			}
 		}
 		int movimento = move(proxCoord[0], proxCoord[1], final_x, final_y, &proxCoord[0], &proxCoord[1]);
+		_tprintf(_TEXT("\ntravelling to (%d, %d)"), proxCoord[0], proxCoord[1]);
 		Sleep(1000);
 	}
 
@@ -73,7 +74,7 @@ int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* 
 
 bool aviaoViaja(int partida_x, int partida_y, int destino_x, int destino_y)
 {	
-	int teste = moveAviao(partida_x, partida_y, destino_x, destino_y, 0, 0);
+	int teste = moveAviao(partida_x, partida_y, destino_x, destino_y, partida_x, partida_y);
 	return teste;
 }
 

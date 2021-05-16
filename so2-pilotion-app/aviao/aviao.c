@@ -50,7 +50,7 @@ int _tmain()
 
     CloseHandle(hMapFile);
 
-    aviaoViaja(0, 0, 1, 1);
+    aviaoViaja(0, 0, 10, 10);
 
     system("pause");
     return 0;

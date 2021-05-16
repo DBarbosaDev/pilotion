@@ -16,7 +16,7 @@ typedef struct Aviao
 	int coordenadasPorSegundo;
 	TCHAR siglaAeroportoPartida[200];
 	TCHAR siglaAeroportoDestino[200];
-
+	int coordenadasAtuais[2]; // x = coordenadasAtuais[0] || y = coordenadasAtuais[1]
 	//Passageiro *passageiros[MAXPASSAG];
 	int passageiros;
 

@@ -20,10 +20,9 @@ Aviao* adicionaAviaoToStack(Aviao* aviao, HANDLE hMapFile) {
         return NULL;
     }
 
-    Aviao* pnAviao = &aviao;
-    CopyMemory(pBuf, pnAviao, sizeof(Aviao));
+    CopyMemory(pBuf, aviao, sizeof(Aviao));
 
     UnmapViewOfFile(pBuf);
 
-    return pnAviao;
+    return aviao;
 }

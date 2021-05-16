@@ -8,6 +8,7 @@
 #include "aviao.model.h"
 #include "../control/constants.h"
 #include "communication.h"
+#include "ui.console.h"
 
 int _tmain()
 {
@@ -23,18 +24,7 @@ int _tmain()
     for (size_t i = 0; i < 2; i++)
         memset(dados[i], 0, 200);
     
-    _tprintf(_TEXT("novoaviao;\n\n"));
-    _tprintf(_TEXT("Numero maximo de passageiros;\n"));
-    wscanf_s(_T("%d"), &maxPassag);
-
-    _tprintf(_TEXT("Coordenadas por segundo;\n"));
-    wscanf_s(_T("%d"), &coordenadasPorSegundo);
-
-    _tprintf(_TEXT("siglaAeroportoPartida;\n"));
-    wscanf_s(_T("%199s"), &dados[0], 200);
-
-    _tprintf(_TEXT("siglaAeroportoDestino;\n"));
-    wscanf_s(_T("%199s"), &dados[1], 200);
+    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
 
     Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);
     wprintf(_T("%d"), nAviao.maxPassag);

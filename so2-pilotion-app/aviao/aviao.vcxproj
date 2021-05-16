@@ -154,6 +154,7 @@
     <ClCompile Include="aviao.model.c" />
     <ClCompile Include="communication.c" />
     <ClCompile Include="passageiro.model.c" />
+    <ClCompile Include="ui.console.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\control\main.helper.h">
@@ -162,6 +163,7 @@
     <ClInclude Include="aviao.model.h" />
     <ClInclude Include="communication.h" />
     <ClInclude Include="passageiro.model.h" />
+    <ClInclude Include="ui.console.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

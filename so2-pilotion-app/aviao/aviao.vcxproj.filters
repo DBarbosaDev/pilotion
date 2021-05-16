@@ -39,6 +39,9 @@
     <ClCompile Include="communication.c">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
+    <ClCompile Include="ui.console.c">
+      <Filter>Source Files\helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aviao.model.h">
@@ -52,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="communication.h">
       <Filter>Source Files\communication</Filter>
+    </ClInclude>
+    <ClInclude Include="ui.console.h">
+      <Filter>Source Files\helpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

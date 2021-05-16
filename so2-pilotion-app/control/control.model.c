@@ -15,9 +15,6 @@ ControlModel initControlModel() {
 	Control.PassagsList = NULL;
 	Control.passagsListLength = 0;
 
-	Control.PendingAirplanesStack = NULL;
-	Control.pendingAirplanesStackLength = 0;
-
 	Control.ApplicationHandles.connectionsRequestsThread = NULL;
 
 	return Control;

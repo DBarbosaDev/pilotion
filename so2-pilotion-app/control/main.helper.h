@@ -10,4 +10,4 @@ TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME);
 
 int getRegistryVarInt(TCHAR* PATH, TCHAR* VALUE_NAME);
 
-Aviao* getSharedMemoryPlanesStack(HANDLE handle, int numberMaxOfPlanes);
+Aviao* getPlanesStackPointer(HANDLE handle, int numberMaxOfPlanes);

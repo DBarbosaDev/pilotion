@@ -11,11 +11,28 @@ typedef struct WorkerThreadHandle {
 	struct WorkerThread* prox;
 } WorkerThreadHandle;
 
+typedef struct SharedMemoryHandles {
+	HANDLE planesStack;
+	HANDLE planesStackSemaphore;
+
+	HANDLE planesStackLength;
+	HANDLE planesStackLengthMutex;
+
+	HANDLE planesStackLastFreeIndex;
+	HANDLE planesStackLastFreeIndexMutex;
+} SharedMemoryHandles;
+
+typedef struct SharedMemoryThreads {
+	HANDLE handlePlanesConnections;
+} SharedMemoryThreads;
+
 typedef struct ApplicationHandles {
 	WorkerThreadHandle* passagWorkerThreadsHandles;
 	HANDLE keepAliveThread;
 	HANDLE connectionsRequestsThread;
-	HANDLE planesStackSharedMemory;
+
+	SharedMemoryHandles SharedMemoryHandles;
+	SharedMemoryThreads SharedMemoryThreads;
 } ApplicationHandles;
 
 typedef struct PassagsLinkedList {
@@ -23,24 +40,16 @@ typedef struct PassagsLinkedList {
 	struct PassagsLinkedList* prox;
 } PassagsLinkedList;
 
-typedef struct AviaoLinkedList {
-	Aviao* aviao;
-	struct AviaoLinkedList* prox;
-} AviaoLinkedList;
-
 typedef struct ControlModel {
 
 	AirportModel* AirportsList;
 	int airportsListLength;
 
-	AviaoLinkedList* PlanesList;
+	Aviao* PlanesList;
 	int planesListLength;
 
 	PassagsLinkedList* PassagsList;
 	int passagsListLength;
-
-	AviaoLinkedList* PendingAirplanesStack;
-	int pendingAirplanesStackLength;
 
 	ApplicationHandles ApplicationHandles;
 

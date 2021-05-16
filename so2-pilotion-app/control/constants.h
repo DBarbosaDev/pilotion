@@ -1,5 +1,13 @@
 #pragma once
 
+#define SHARED_MEMORY_STACK_WRITE_INDEX _T("Global\PlanesStackLastLength")
+#define SHARED_MEMORY_STACK_WRITE_INDEX_MUTEX _T("Global\PlanesStackLastLengthMutex")
+
+#define SHARED_MEMORY_STACK_READ_INDEX _T("Global\PlanesStackLastFreeIndex")
+#define SHARED_MEMORY_STACK_READ_INDEX_MUTEX _T("Global\PlanesStackLastFreeIndexMutex")
+
+#define SHARED_MEMORY_STACK_SEMAPHORE _T("Global\PlanesStackLastFreeIndexMutex")
+
 #define REGISTRY_PATH _T("SOFTWARE\\Pilotion")
 
 #define REGISTRY_SHARED_MEMORY_STACK_PLANES _T("PlanesStackName")

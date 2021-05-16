@@ -83,7 +83,7 @@ int getRegistryVarInt(TCHAR* PATH, TCHAR* VALUE_NAME) {
     return _wtoi(registryValue, NULL, 10);
 }
 
-Aviao* getSharedMemoryPlanesStack(HANDLE handle, int numberMaxOfPlanes) {
+Aviao* getPlanesStackPointer(HANDLE handle, int numberMaxOfPlanes) {
     Aviao* stack = (Aviao*) MapViewOfFile(handle, FILE_MAP_ALL_ACCESS, 0, 0, (numberMaxOfPlanes * sizeof(Aviao)));
 
     if (stack == NULL) {

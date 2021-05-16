@@ -36,6 +36,9 @@
     <ClCompile Include="communication.model.c">
       <Filter>Resource Files\Source Files\models</Filter>
     </ClCompile>
+    <ClCompile Include="threads.c">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.helper.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="control.model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="threads.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -146,6 +146,7 @@
     <ClCompile Include="control.c" />
     <ClCompile Include="control.model.c" />
     <ClCompile Include="main.helper.c" />
+    <ClCompile Include="threads.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="airport.model.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="main.helper.h">
       <FileType>CppHeader</FileType>
     </ClInclude>
+    <ClInclude Include="threads.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

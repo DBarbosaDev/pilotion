@@ -10,7 +10,7 @@
 #include "communication.h"
 #include "ui.console.h"
 
-int _tmain()
+int _tmain(int argc, char* argv[])
 {
 #ifdef UNICODE
     _setmode(_fileno(stdin), _O_WTEXT);
@@ -23,7 +23,8 @@ int _tmain()
     TCHAR dados[2][200];
     for (size_t i = 0; i < 2; i++)
         memset(dados[i], 0, 200);
-    
+
+    // trocar por argumentos de consola
     iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
 
     Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);

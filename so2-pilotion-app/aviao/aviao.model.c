@@ -1,13 +1,11 @@
 #pragma once
 
-#include <process.h>
 #include "aviao.model.h"
-#include "../control/main.helper.h"
 
 /**
  * @inheritDoc
 **/
-Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][200])
+Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][BUFFER_SIZE])
 {
 	Aviao Aviao;
 
@@ -22,6 +20,26 @@ Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dados
 
 	return Aviao;
 }
+
+
+int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* next_y) 
+{
+	int movimento = move(cur_x, cur_y, final_x, final_y, next_x, next_y);
+	if (movimento == 0)
+		// procurar alternativas de deslocação (duas alternativas)
+		return 0;
+	else {
+		return 1;
+	}
+	// ver o que retorna 
+}
+
+bool aviaoViaja(int partida_x, int partida_y, int destino_x, int destino_y)
+{	
+	int teste = moveAviao(partida_x, partida_y, destino_x, destino_y, 0, 0);
+	return teste;
+}
+
 
 /**
  * @inheritDoc

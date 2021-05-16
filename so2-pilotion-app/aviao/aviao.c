@@ -28,9 +28,8 @@ int _tmain(int argc, char* argv[])
     iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
 
     Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);
-    wprintf(_T("%d"), nAviao.maxPassag);
-    wprintf(_T("%s"), nAviao.siglaAeroportoDestino);
-    wprintf(_T("%s"), nAviao.siglaAeroportoPartida);
+
+    WaitForSingleObject(nAviao.Threads.hConfirmacaoConexao, INFINITE);
 
     HANDLE hMapFile;
     Aviao *pBuf;

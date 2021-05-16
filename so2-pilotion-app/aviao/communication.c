@@ -3,7 +3,6 @@
 #include "./communication.h"
 
 
-
 Aviao* adicionaAviaoToStack(Aviao* aviao, HANDLE hMapFile) {
 	Aviao *pBuf = (Aviao*)MapViewOfFile(hMapFile, // handle to map object
         FILE_MAP_ALL_ACCESS,  // read/write permission

@@ -9,40 +9,40 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Resource Files\Source Files">
+    <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Resource Files\Source Files\models">
+    <Filter Include="Source Files\models">
       <UniqueIdentifier>{474adba1-d984-4324-ba52-2ea26c4af9e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Source Files\helpers">
+    <Filter Include="Source Files\helpers">
       <UniqueIdentifier>{3f37d977-f604-43dd-a2d8-04fca763309d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="control.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="control.model.c">
-      <Filter>Resource Files\Source Files\models</Filter>
+      <Filter>Source Files\models</Filter>
     </ClCompile>
     <ClCompile Include="main.helper.c">
-      <Filter>Resource Files\Source Files\helpers</Filter>
+      <Filter>Source Files\helpers</Filter>
     </ClCompile>
     <ClCompile Include="airport.model.c">
-      <Filter>Resource Files\Source Files\models</Filter>
+      <Filter>Source Files\models</Filter>
     </ClCompile>
     <ClCompile Include="communication.model.c">
-      <Filter>Resource Files\Source Files\models</Filter>
+      <Filter>Source Files\models</Filter>
     </ClCompile>
     <ClCompile Include="threads.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.helper.h">
-      <Filter>Resource Files\Source Files\helpers</Filter>
+      <Filter>Source Files\helpers</Filter>
     </ClInclude>
     <ClInclude Include="constants.h">
       <Filter>Header Files</Filter>

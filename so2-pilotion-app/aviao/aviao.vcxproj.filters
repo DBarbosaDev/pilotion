@@ -42,6 +42,9 @@
     <ClCompile Include="ui.console.c">
       <Filter>Source Files\helpers</Filter>
     </ClCompile>
+    <ClCompile Include="threads_routines.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aviao.model.h">
@@ -58,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="ui.console.h">
       <Filter>Source Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="threads_routines.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

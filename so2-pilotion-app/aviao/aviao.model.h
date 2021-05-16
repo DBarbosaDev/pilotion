@@ -8,18 +8,41 @@
 #define MAXPASSAG 10
 #define BUFFER_SIZE 200
 
+typedef struct Eventos {
+	HANDLE handleEventoConfirmacaoConexao;
+	TCHAR nomeEventoConfirmacaoConexao[BUFFER_SIZE];
+
+	HANDLE handleEventoAeroportosInvalidos;
+	TCHAR nomeEventoAeroportosInvalidos[BUFFER_SIZE];
+
+	HANDLE handleEventoParaSair;
+	TCHAR nomeEventoParaSair[BUFFER_SIZE];
+} Eventos;
+
+typedef struct Threads {
+	HANDLE hConfirmacaoConexao;
+	HANDLE hAeroportosInvalidos;
+	HANDLE hControloDeSaida;
+} Threads;
+
 typedef struct Aviao
 {
 	DWORD PID;
-	int maxPassag;
 
+	int maxPassag;
 	int coordenadasPorSegundo;
-	TCHAR siglaAeroportoPartida[200];
-	TCHAR siglaAeroportoDestino[200];
-	int coordenadasAtuais[2]; // x = coordenadasAtuais[0] || y = coordenadasAtuais[1]
+	// x = coordenadasAtuais[0] || y = coordenadasAtuais[1]
+	int coordenadasAtuais[2];
 	//Passageiro *passageiros[MAXPASSAG];
 	int passageiros;
 
+	TCHAR siglaAeroportoPartida[200];
+	TCHAR siglaAeroportoDestino[200];
+	
+	int estadoConexaoComControl;
+
+	Eventos eventos;
+	Threads Threads;
 } Aviao;
 
 /**
@@ -27,7 +50,11 @@ typedef struct Aviao
  *	dadosAeroporto[0] = sigla aeroporto de partida
  *  dadosAeroporto[1] = sigla do aeroporto de destino
 **/
-Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR *dadosAeroporto[]);
+Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][BUFFER_SIZE]);
+
+void iniciarEventos(Aviao* aviao);
+
+void iniciarThreads(Aviao* aviao);
 
 /**
  *	Embarcar um passageiro no respetivo aviao

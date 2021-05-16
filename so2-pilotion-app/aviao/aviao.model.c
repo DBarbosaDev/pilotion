@@ -64,6 +64,7 @@ int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* 
 			}
 		}
 		int movimento = move(proxCoord[0], proxCoord[1], final_x, final_y, &proxCoord[0], &proxCoord[1]);
+		Sleep(1000);
 	}
 
 	_tprintf(_TEXT("O avião chegou ao destino nas coordenadas (%d, %d)"), proxCoord[0], proxCoord[1]);

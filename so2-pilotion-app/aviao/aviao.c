@@ -12,6 +12,25 @@
 #include "../control/constants.h"
 #include "../control/main.helper.h"
 
+int WINAPI ConsoleHandler(DWORD CEvent) {
+    HANDLE hSemaforo = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
+
+    switch (CEvent) {
+    case CTRL_CLOSE_EVENT:
+        setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("0"));
+        ReleaseSemaphore(hSemaforo, 1, NULL);
+        CloseHandle(hSemaforo);
+        exit(0);
+        break;
+    case CTRL_C_EVENT:
+        setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("0"));
+        ReleaseSemaphore(hSemaforo, 1, NULL);
+        CloseHandle(hSemaforo);
+        exit(0);
+        break;
+    }
+}
+
 int _tmain()
 {
     #ifdef UNICODE
@@ -20,7 +39,8 @@ int _tmain()
         _setmode(_fileno(stderr), _O_WTEXT);
     #endif
 
-    HANDLE hMapFile;
+    Aviao* pAviaoStack = NULL;
+    HANDLE hMapFile, hSemaforo;
     TCHAR dados[2][200];
     for (size_t i = 0; i < 2; i++)
         memset(dados[i], 0, 200);
@@ -34,21 +54,33 @@ int _tmain()
 
     if (hMapFile == NULL) {
         wprintf(TEXT("\n>> O controlador não está a correr. Tente mais tarde\n"));
+        system("pause");
         return 1;
     }
 
-    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
+    if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)ConsoleHandler, TRUE)) {
+        _wperror(_T("ERROR: O programa não consegui carregar o handler da consola.\n"));
+        exit(1);
+    }
 
+    hSemaforo = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
+
+    wprintf(TEXT("\n>> A aguardar por disponibilidade...\n"));
+    WaitForSingleObject(hSemaforo, INFINITE);
+
+    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
     Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);
 
+    pAviaoStack = adicionaAviaoToStack(&nAviao, hMapFile);
+
+    sendEventByName(EVENT_ALERT_PLANE_CONNECTION);
     WaitForSingleObject(nAviao.Threads.hConfirmacaoConexao, INFINITE);
 
-    adicionaAviaoToStack(&nAviao, hMapFile);
-
+    wprintf(TEXT("\n>> Teste de uma TestarViagem\n"));
     aviaoViaja(0, 0, 10, 10);
 
-    system("pause");
-
+    ReleaseSemaphore(hSemaforo, 1, NULL);
+    CloseHandle(hSemaforo);
     CloseHandle(hMapFile);
     return 0;
 }

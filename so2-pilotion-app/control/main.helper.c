@@ -127,3 +127,44 @@ int getIntValueFromSharedMemory(TCHAR* instanceName) {
 
     return value;
 }
+
+void setIntValueFromSharedMemory(TCHAR* instanceName, int newValue) {
+    HANDLE hMapFile;
+    int* pBuf;
+    int value;
+
+    hMapFile = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, instanceName);
+
+    if (hMapFile == NULL)
+    {
+        _tprintf(TEXT("Could not create file mapping object (%d).\n"),
+            GetLastError());
+        exit(1);
+    }
+    pBuf = (int*)MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(int));
+
+    if (pBuf == NULL) {
+        _tprintf(TEXT("Could not map view of file (%d).\n"),
+            GetLastError());
+
+        CloseHandle(hMapFile);
+
+        exit(1);
+    }
+
+    CopyMemory(pBuf, &newValue, sizeof(int));
+
+    UnmapViewOfFile(pBuf);
+
+    CloseHandle(hMapFile);
+    
+    UnmapViewOfFile(pBuf);
+}
+
+void sendEventByName(TCHAR* eventName) {
+    HANDLE hEvent = OpenEvent(EVENT_ALL_ACCESS | EVENT_MODIFY_STATE, FALSE, eventName);
+
+    SetEvent(hEvent);
+
+    CloseHandle(hEvent);
+}

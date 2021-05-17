@@ -7,13 +7,16 @@
 ControlModel initControlModel() {
 	ControlModel Control;
 
+    int maxAirportsLength = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS);
+    int maxPlanesLength = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_PLANES);
+
 	Control.AirportsList = NULL;
 	Control.airportsListLength = 0;
-    Control.maxAirportsLength = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS);
+    Control.maxAirportsLength = !maxAirportsLength ? 10 : maxAirportsLength;
 
 	Control.PlanesList = NULL;
 	Control.planesListLength = 0;
-    Control.maxPlanesLength = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_PLANES);
+    Control.maxPlanesLength = !maxPlanesLength ? 10 : maxPlanesLength;
 
 	Control.PassagsList = NULL;
 	Control.passagsListLength = 0;
@@ -22,14 +25,13 @@ ControlModel initControlModel() {
 
     instanciarMemoriasPartilhadas(&Control);
     instanciarIndicesDaMemoriaPartilhada(&Control);
-    instanciarMutexesESemaforo(&Control);
-    instanciarThreadsControloDeAvioes(&Control);
+    instanciarMutexesSemaforoEventos(&Control);
 
 	return Control;
 }
 
 void instanciarMemoriasPartilhadas(ControlModel* Control) {
-    int numeroMaximoAvioes = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS);
+    int numeroMaximoAvioes = Control->maxPlanesLength;
 
     Control->ApplicationHandles.SharedMemoryHandles.planesStack = CreateFileMapping(
         INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(Aviao) * numeroMaximoAvioes,
@@ -92,7 +94,7 @@ void instanciarIndicesDaMemoriaPartilhada(ControlModel* Control) {
     UnmapViewOfFile(pBuf);
 }
 
-void instanciarMutexesESemaforo(ControlModel* Control) {
+void instanciarMutexesSemaforoEventos(ControlModel* Control) {
     Control->ApplicationHandles.SharedMemoryHandles.planesStackSemaphore = CreateSemaphore(
         NULL, Control->maxPlanesLength, Control->maxPlanesLength, SHARED_MEMORY_STACK_SEMAPHORE);
 
@@ -101,6 +103,9 @@ void instanciarMutexesESemaforo(ControlModel* Control) {
 
     Control->ApplicationHandles.SharedMemoryHandles.planesStackIndexToWriteMutex = CreateMutex(
         NULL, FALSE, SHARED_MEMORY_STACK_WRITE_INDEX_MUTEX);
+
+    Control->ApplicationHandles.SharedMemoryHandles.eventAlertPlaneConnection = CreateEvent(
+        NULL, TRUE, FALSE, EVENT_ALERT_PLANE_CONNECTION);
 }
 
 void instanciarThreadsControloDeAvioes(ControlModel* Control) {

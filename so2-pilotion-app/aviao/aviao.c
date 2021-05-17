@@ -31,7 +31,7 @@ int WINAPI ConsoleHandler(DWORD CEvent) {
     }
 }
 
-int _tmain()
+int _tmain(int argc, char* argv[])
 {
     #ifdef UNICODE
         _setmode(_fileno(stdin), _O_WTEXT);

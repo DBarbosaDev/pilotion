@@ -12,4 +12,7 @@ int getRegistryVarInt(TCHAR* PATH, TCHAR* VALUE_NAME);
 
 Aviao* getPlanesStackPointer(HANDLE handle, int numberMaxOfPlanes);
 
-int getIntValueFromSharedMemory(TCHAR *instanceName);
+int getIntValueFromSharedMemory(TCHAR* instanceName);
+void setIntValueFromSharedMemory(TCHAR* instanceName, int newValue);
+
+void sendEventByName(TCHAR* eventName);

@@ -30,8 +30,6 @@ int WINAPI ConsoleHandler(DWORD CEvent) {
 int setAppRegistryVars() {
     return
         setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("1"))
-        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_PLANES, _T("10\0"))
-        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS, _T("10\0"))
         && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_NAMEDPIPE, _T("\\\\.\\pipe\\PilotionControlNamedPipe\0"));
 }
 
@@ -71,7 +69,7 @@ void bootstrapInitialSettings() {
 }
 
 void pedirDadosECriarAeroporto(ControlModel* Control) {
-    int numeroMaximoAvioes = getRegistryVarInt(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_MAX_AIRPORTS);
+    int numeroMaximoAvioes = Control->maxPlanesLength;
 
     if (numeroMaximoAvioes == Control->airportsListLength) {
         wprintf(_T("\n>> O número máximo de aeroportos já foi atingido.\n"));
@@ -138,6 +136,8 @@ void _tmain() {
     Control.PlanesList = getPlanesStackPointer(
         Control.ApplicationHandles.SharedMemoryHandles.planesStack,
         Control.maxPlanesLength);
+
+    instanciarThreadsControloDeAvioes(&Control);
 
     // routine logic goes here
     while (1) {

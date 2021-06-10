@@ -25,7 +25,7 @@ ControlModel initControlModel() {
 
     instanciarMemoriasPartilhadas(&Control);
     instanciarIndicesDaMemoriaPartilhada(&Control);
-    instanciarMutexesSemaforoEventos(&Control);
+    instanciarMutexesSemaforos(&Control);
 
 	return Control;
 }
@@ -94,9 +94,12 @@ void instanciarIndicesDaMemoriaPartilhada(ControlModel* Control) {
     UnmapViewOfFile(pBuf);
 }
 
-void instanciarMutexesSemaforoEventos(ControlModel* Control) {
+void instanciarMutexesSemaforos(ControlModel* Control) {
     Control->ApplicationHandles.SharedMemoryHandles.planesStackSemaphore = CreateSemaphore(
         NULL, Control->maxPlanesLength, Control->maxPlanesLength, SHARED_MEMORY_STACK_SEMAPHORE);
+
+    Control->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore = CreateSemaphore(
+        NULL, 0, Control->maxPlanesLength, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
 
     Control->ApplicationHandles.SharedMemoryHandles.planesStackIndexToReadMutex = CreateMutex(
         NULL, FALSE, SHARED_MEMORY_STACK_READ_INDEX_MUTEX);
@@ -104,8 +107,8 @@ void instanciarMutexesSemaforoEventos(ControlModel* Control) {
     Control->ApplicationHandles.SharedMemoryHandles.planesStackIndexToWriteMutex = CreateMutex(
         NULL, FALSE, SHARED_MEMORY_STACK_WRITE_INDEX_MUTEX);
 
-    Control->ApplicationHandles.SharedMemoryHandles.eventAlertPlaneConnection = CreateEvent(
-        NULL, TRUE, FALSE, EVENT_ALERT_PLANE_CONNECTION);
+    //Control->ApplicationHandles.SharedMemoryHandles.eventAlertPlaneConnection = CreateEvent(
+    //    NULL, TRUE, FALSE, EVENT_ALERT_PLANE_CONNECTION);
 }
 
 void instanciarThreadsControloDeAvioes(ControlModel* Control) {

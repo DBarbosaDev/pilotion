@@ -68,37 +68,6 @@ void bootstrapInitialSettings() {
     }
 }
 
-void pedirDadosECriarAeroporto(ControlModel* Control) {
-    int numeroMaximoAvioes = Control->maxPlanesLength;
-
-    if (numeroMaximoAvioes == Control->airportsListLength) {
-        wprintf(_T("\n>> O número máximo de aeroportos já foi atingido.\n"));
-        return;
-    }
-
-    TCHAR nome[INPUT_BUFF_SIZE] = _T("\0");
-    int posicaoX = 0, posicaoY = 0;
-
-    wprintf(_T("\nInserir dados do aeroporto\n"));
-
-    wprintf(_T("Nome: ")); fflush(stdout);
-    wscanf_s(_T("%99s"), nome, INPUT_BUFF_SIZE);
-
-    wprintf(_T("Posição X: ")); fflush(stdout);
-    wscanf_s(_T("%i"), &posicaoX, sizeof(int));
-
-    wprintf(_T("Posição Y: ")); fflush(stdout);
-    wscanf_s(_T("%i"), &posicaoY, sizeof(int));
-    
-    if (Control->AirportsList == NULL) {
-        Control->AirportsList = createAirport(NULL, newString(nome), posicaoX, posicaoY);
-        Control->airportsListLength += Control->AirportsList != NULL ? 1 : 0;
-        return;
-    }
-
-    Control->airportsListLength += createAirport(Control->AirportsList, newString(nome), posicaoX, posicaoY) != NULL ? 1 : 0;
-}
-
 void apresentarMenu() {
     //system("cls");
 
@@ -112,10 +81,10 @@ void apresentarMenu() {
 }
 
 void tratarComandos(TCHAR* comando, ControlModel* Control) {
-    if (!wcscmp(comando, _T("a"))) {
+ /*   if (!wcscmp(comando, _T("a"))) {
         pedirDadosECriarAeroporto(Control);
         return;
-    }
+    }*/
     if (!wcscmp(comando, _T("b"))) {
         listarAeroportos(Control->AirportsList);
         return;

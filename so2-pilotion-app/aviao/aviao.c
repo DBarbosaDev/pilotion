@@ -1,6 +1,3 @@
-// aviao.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <stdio.h>
 #include <tchar.h>
 #include <windows.h>
@@ -64,23 +61,36 @@ int _tmain(int argc, char* argv[])
     }
 
     hSemaforo = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
+    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
 
     wprintf(TEXT("\n>> A aguardar por disponibilidade...\n"));
-    WaitForSingleObject(hSemaforo, INFINITE);
+    DWORD waitForStackLength = WaitForSingleObject(hSemaforo, INFINITE);
 
-    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
-    Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);
+    switch (waitForStackLength)
+    {
+        case WAIT_OBJECT_0: 
+            Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);
+            pAviaoStack = adicionaAviaoToStack(&nAviao, hMapFile);
+            wprintf(_T("\n>> O Controlador aceitou a conexão com sucesso.\n"));
 
-    pAviaoStack = adicionaAviaoToStack(&nAviao, hMapFile);
+            if (!ReleaseSemaphore(hSemaforo, 1, NULL))
+                wprintf(_T("Release Semaphore error\n"));
+            break;
+        case WAIT_TIMEOUT:
+            _tprintf(TEXT("Could not receive any sign of num items change. %d\n"), GetLastError());
+            break;
+        default:
+            break;
+    }
 
-    sendEventByName(EVENT_ALERT_PLANE_CONNECTION);
-    WaitForSingleObject(nAviao.Threads.hConfirmacaoConexao, INFINITE);
-
-    wprintf(TEXT("\n>> Teste de uma TestarViagem\n"));
-    aviaoViaja(0, 0, 10, 10);
-
-    ReleaseSemaphore(hSemaforo, 1, NULL);
     CloseHandle(hSemaforo);
     CloseHandle(hMapFile);
+
+    while(1){
+        TCHAR command[200];
+        _tprintf(_TEXT("$>"));
+        wscanf_s(_T("%199s"), &command, 200);
+    }
+
     return 0;
 }

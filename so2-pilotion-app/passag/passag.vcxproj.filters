@@ -30,12 +30,18 @@
     <ClCompile Include="..\control\main.helper.c">
       <Filter>Source Files\helpers</Filter>
     </ClCompile>
+    <ClCompile Include="ui.console.c">
+      <Filter>Source Files\helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="passag.model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\control\main.helper.h">
+      <Filter>Source Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="ui.console.h">
       <Filter>Source Files\helpers</Filter>
     </ClInclude>
   </ItemGroup>

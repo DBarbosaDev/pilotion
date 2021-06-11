@@ -7,6 +7,7 @@
 #define SHARED_MEMORY_STACK_READ_INDEX_MUTEX _T("Global\planesStackIndexToReadMutex")
 #define SHARED_MEMORY_STACK_LENGTH_VALUE _T("Global\planesStackLength")
 #define SHARED_MEMORY_STACK_SEMAPHORE _T("Global\planesStackIndexToReadMutex")
+#define SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM _T("Global\planesStackNumItem")
 
 #define EVENT_ALERT_PLANE_CONNECTION _T("Global\alertPlaneConnection")
 

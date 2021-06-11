@@ -15,6 +15,7 @@ typedef struct SharedMemoryHandles {
 	HANDLE planesStack;
 	HANDLE planesStackLength;
 	HANDLE planesStackSemaphore;
+	HANDLE planeStackNumItemSemaphore;
 
 	HANDLE planesStackIndexToWrite;
 	HANDLE planesStackIndexToWriteMutex;
@@ -64,5 +65,5 @@ ControlModel initControlModel();
 
 void instanciarMemoriasPartilhadas(ControlModel* Control);
 void instanciarIndicesDaMemoriaPartilhada(ControlModel* Control);
-void instanciarMutexesSemaforoEventos(ControlModel* Control);
+void instanciarMutexesSemaforos(ControlModel* Control);
 void instanciarThreadsControloDeAvioes(ControlModel* Control);

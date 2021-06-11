@@ -2,16 +2,15 @@
 
 #include <windows.h>
 #include <tchar.h>
+#include <stdbool.h>
 
-typedef struct PassagModel {
-	DWORD PID;
+typedef struct Passageiro{
+	int pid;
+	int tempoEspera;
+	TCHAR* nome;
+	TCHAR* siglaAeroportoPartida;
+	TCHAR* siglaAeroportoDestino;
+	bool embarcado;
+} Passageiro;
 
-	TCHAR* name;
-	TCHAR* airportName;
-	TCHAR* destinationAirportName;
-	
-	// Optional
-	int waitingTime;
-} PassagModel;
-
-PassagModel newPassagModel(DWORD PID, TCHAR* name, TCHAR* airportName, TCHAR* destinationAirportName, int waitingTime);
+Passageiro novoPassageiro(DWORD PID, TCHAR* nome, TCHAR* siglaAeroportoPartida, TCHAR* siglaAeroportoDestino, int tempoEspera);

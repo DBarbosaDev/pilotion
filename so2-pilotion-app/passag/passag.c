@@ -5,24 +5,28 @@
 #include <tchar.h>
 #include <windows.h>
 #include <fcntl.h>
+#include "passag.model.h"
 
-int _tmain()
+
+int _tmain(int argc, char* argv[])
 {
-    #ifdef UNICODE
-        _setmode(_fileno(stdin), _O_WTEXT);
-        _setmode(_fileno(stdout), _O_WTEXT);
-        _setmode(_fileno(stderr), _O_WTEXT);
-    #endif
+#ifdef UNICODE
+    _setmode(_fileno(stdin), _O_WTEXT);
+    _setmode(_fileno(stdout), _O_WTEXT);
+    _setmode(_fileno(stderr), _O_WTEXT);
+#endif
+
+    Passageiro* passag = NULL;
+    TCHAR dados[2][200];
+    for (size_t i = 0; i < 2; i++)
+        memset(dados[i], 0, 200);
+
+    TCHAR nome[200];
+    memset(nome, 0, 200);
+    int *tempoEspera = 0;
+
+    iniciaUI(nome, dados, tempoEspera);
+    Passageiro nPassag = novoPassageiro(-1, nome, dados[0], dados[1], tempoEspera);
+    
     wprintf(_T("Olá Mundo de passageiros"));
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

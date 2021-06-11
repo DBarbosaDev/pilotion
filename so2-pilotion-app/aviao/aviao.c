@@ -49,7 +49,7 @@ int _tmain(int argc, char* argv[])
         FALSE,
         SHARED_MEMORY_STACK_PLANES);
 
-    if (hMapFile == NULL) {
+    if (hMapFile == NULL) { 
         wprintf(TEXT("\n>> O controlador n�o est� a correr. Tente mais tarde\n"));
         system("pause");
         return 1;

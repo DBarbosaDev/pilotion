@@ -7,7 +7,7 @@ int isNotInAirportMaxRadius(int positionX, int positionY, int newPositionX, int 
 	return pow((double)newPositionX - (double)positionX, 2.0) + pow((double)newPositionY - (double)positionY, 2.0) > 100;
 }
 
-AirportModel* createAirport(AirportModel* AirportsList, TCHAR* name, int positionX, int positionY) {
+AirportModel* createAirport(HWND windowHandle, AirportModel* AirportsList, TCHAR* name, int positionX, int positionY) {
 	AirportModel* Airport = malloc(sizeof(AirportModel));
 	AirportModel* auxAirportsList = AirportsList;
 
@@ -22,7 +22,7 @@ AirportModel* createAirport(AirportModel* AirportsList, TCHAR* name, int positio
 	Airport->prox = NULL;
 
 	if (AirportsList == NULL) {
-		wprintf(_T("\n>> Aeroporto criado com sucesso\n"));
+		MessageBox(windowHandle, _T("Aeroporto criado com sucesso"), _T("Aviso:"), MB_OK);
 
 		AirportsList = Airport;
 		return AirportsList;
@@ -30,13 +30,13 @@ AirportModel* createAirport(AirportModel* AirportsList, TCHAR* name, int positio
 
 	while (1) {
 		if (!wcscmp(auxAirportsList->name, name)) {
-			wprintf(_T("Já existe um aeroporto com o nome %s. Tente novamente\n"), name);
+			MessageBox(windowHandle, _T("Já existe um aeroporto com o nome inserido. Tente novamente"), _T("Aviso:"), MB_OK | MB_ICONERROR);
 			free(Airport);
 			return NULL;
 		}
 
 		if (!isNotInAirportMaxRadius(auxAirportsList->positionX, auxAirportsList->positionY, positionX, positionY)) {
-			wprintf(_T("O aeroporto [%s] encontra-se num raio de 10 posições. Tente outras coordenadas.\n"), auxAirportsList->name);
+			MessageBox(windowHandle, _T("O aeroporto encontra-se dentro do raio de 10 posições de outro aeroporto. Tente outras coordenadas."), _T("Aviso:"), MB_OK | MB_ICONERROR);
 			free(Airport);
 			return NULL;
 		}
@@ -49,9 +49,9 @@ AirportModel* createAirport(AirportModel* AirportsList, TCHAR* name, int positio
 		auxAirportsList = auxAirportsList->prox;
 	}
 
-	auxAirportsList->prox = Airport;
+	MessageBox(windowHandle, _T("Aeroporto criado com sucesso"), _T("Aviso:"), MB_OK);
 
-	wprintf(_T("\n>> Aeroporto criado com sucesso\n"));
+	auxAirportsList->prox = Airport;
 
 	return AirportsList;
 }

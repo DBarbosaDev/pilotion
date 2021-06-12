@@ -99,14 +99,14 @@ void instanciarMutexesSemaforoEventos(ControlModel* Control) {
     Control->ApplicationHandles.SharedMemoryHandles.planesStackSemaphore = CreateSemaphore(
         NULL, Control->maxPlanesLength, Control->maxPlanesLength, SHARED_MEMORY_STACK_SEMAPHORE);
 
+    Control->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore = CreateSemaphore(
+        NULL, 0, 1, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
+
     Control->ApplicationHandles.SharedMemoryHandles.planesStackIndexToReadMutex = CreateMutex(
         NULL, FALSE, SHARED_MEMORY_STACK_READ_INDEX_MUTEX);
 
     Control->ApplicationHandles.SharedMemoryHandles.planesStackIndexToWriteMutex = CreateMutex(
         NULL, FALSE, SHARED_MEMORY_STACK_WRITE_INDEX_MUTEX);
-
-    Control->ApplicationHandles.SharedMemoryHandles.eventAlertPlaneConnection = CreateEvent(
-        NULL, TRUE, FALSE, EVENT_ALERT_PLANE_CONNECTION);
 }
 
 void instanciarThreadsControloDeAvioes(ControlModel* Control) {
@@ -123,4 +123,37 @@ void instanciarNomeDasJanelasGUI(ControlModel* Control) {
 
     Control->gui.janelas.controlPannel.nomeDaClass = WINDOW_CLASS_PANNEL_NAME;
     Control->gui.janelas.controlPannel.titulo = newString(_T("Painel de controlo"));
+}
+
+void recolherValoresFormularioECriarAeroporto(ControlModel* Control, Janela* janela) {
+    unsigned int tamanhoPalavra;
+    TCHAR* palavras[3];
+
+    for (int i = 0; NOT_INITIALIZED_VALUE != janela->vetorDeHandlesCamposTexto[i]; i++) {
+        tamanhoPalavra = GetWindowTextLength(janela->vetorDeHandlesCamposTexto[i]) + 1;
+
+        palavras[i] = malloc(sizeof(TCHAR) * tamanhoPalavra);
+
+        GetWindowText(janela->vetorDeHandlesCamposTexto[i], palavras[i], tamanhoPalavra);
+    }
+
+    if (Control->AirportsList == NULL) {
+        Control->AirportsList = createAirport(janela->handle, NULL, palavras[0], _wtoi(palavras[1]), _wtoi(palavras[2]));
+        Control->airportsListLength += Control->AirportsList != NULL ? 1 : 0;
+        cleanGuiFields(janela->vetorDeHandlesCamposTexto);
+        return;
+    }
+
+    AirportModel* resultadoAeroporto = createAirport(janela->handle, Control->AirportsList, palavras[0], _wtoi(palavras[1]), _wtoi(palavras[2]));
+    
+    if (resultadoAeroporto != NULL) {
+        Control->airportsListLength += 1;
+
+        cleanGuiFields(janela->vetorDeHandlesCamposTexto);
+    }
+    
+
+    for (int i = 0; i < 3; i++) {
+        free(palavras[i]);
+    }
 }

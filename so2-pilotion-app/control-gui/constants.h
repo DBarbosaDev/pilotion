@@ -6,9 +6,10 @@
 #define SHARED_MEMORY_STACK_READ_INDEX _T("Global\planesStackIndexToRead")
 #define SHARED_MEMORY_STACK_READ_INDEX_MUTEX _T("Global\planesStackIndexToReadMutex")
 #define SHARED_MEMORY_STACK_LENGTH_VALUE _T("Global\planesStackLength")
-#define SHARED_MEMORY_STACK_SEMAPHORE _T("Global\planesStackIndexToReadMutex")
+#define SHARED_MEMORY_STACK_SEMAPHORE _T("Global\planesStackSemaphore")
+#define SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM _T("Global\planesStackNumItem")
 
-#define EVENT_ALERT_PLANE_CONNECTION _T("Global\alertPlaneConnection")
+//#define EVENT_ALERT_PLANE_CONNECTION _T("Global\alertPlaneConnection")
 
 #define REGISTRY_PATH _T("SOFTWARE\\Pilotion")
 
@@ -22,6 +23,10 @@
 #define WINDOW_CLASS_MAP_NAME _T("MapWindowClass")
 #define WINDOW_CLASS_LOGS_NAME _T("LogsWindowClass")
 #define WINDOW_CLASS_PANNEL_NAME _T("PannelWindowClass")
+
+#define NOT_INITIALIZED_VALUE 0xcccccccccccccccc
+
+#define GUI_BUTTON_ID_SUBMIT_AIRPORT _T("CREATE_AIRPORT")
 
 // TODO delete
 // #define REGISTRY_TMP_AVIAO_PATH _T("SOFTWARE\\Pilotion\\tmp\\aviao\\")

@@ -10,19 +10,19 @@
 #include "../control/main.helper.h"
 
 int WINAPI ConsoleHandler(DWORD CEvent) {
-    HANDLE hSemaforo = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
+    HANDLE semaforoControloLotacao = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
 
     switch (CEvent) {
     case CTRL_CLOSE_EVENT:
         setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("0"));
-        ReleaseSemaphore(hSemaforo, 1, NULL);
-        CloseHandle(hSemaforo);
+        ReleaseSemaphore(semaforoControloLotacao, 1, NULL);
+        CloseHandle(semaforoControloLotacao);
         exit(0);
         break;
     case CTRL_C_EVENT:
         setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("0"));
-        ReleaseSemaphore(hSemaforo, 1, NULL);
-        CloseHandle(hSemaforo);
+        ReleaseSemaphore(semaforoControloLotacao, 1, NULL);
+        CloseHandle(semaforoControloLotacao);
         exit(0);
         break;
     }
@@ -37,7 +37,7 @@ int _tmain(int argc, char* argv[])
     #endif
 
     Aviao* pAviaoStack = NULL;
-    HANDLE hMapFile, hSemaforo;
+    HANDLE hMapFile, semaforoControloLotacao, semaforoParaLeituraItem;
     TCHAR dados[2][200];
     for (size_t i = 0; i < 2; i++)
         memset(dados[i], 0, 200);
@@ -60,21 +60,24 @@ int _tmain(int argc, char* argv[])
         exit(1);
     }
 
-    hSemaforo = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
-    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
-
     wprintf(TEXT("\n>> A aguardar por disponibilidade...\n"));
-    DWORD waitForStackLength = WaitForSingleObject(hSemaforo, INFINITE);
+
+    semaforoControloLotacao = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
+    semaforoParaLeituraItem = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
+    
+    DWORD waitForStackLength = WaitForSingleObject(semaforoControloLotacao, INFINITE);
 
     switch (waitForStackLength)
     {
         case WAIT_OBJECT_0: 
             Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);
+            
             pAviaoStack = adicionaAviaoToStack(&nAviao, hMapFile);
+
+            ReleaseSemaphore(semaforoParaLeituraItem, 1, NULL);
+
             wprintf(_T("\n>> O Controlador aceitou a conexão com sucesso.\n"));
 
-            if (!ReleaseSemaphore(hSemaforo, 1, NULL))
-                wprintf(_T("Release Semaphore error\n"));
             break;
         case WAIT_TIMEOUT:
             _tprintf(TEXT("Could not receive any sign of num items change. %d\n"), GetLastError());
@@ -83,14 +86,17 @@ int _tmain(int argc, char* argv[])
             break;
     }
 
-    CloseHandle(hSemaforo);
-    CloseHandle(hMapFile);
+    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
 
     while(1){
         TCHAR command[200];
         _tprintf(_TEXT("$>"));
         wscanf_s(_T("%199s"), &command, 200);
     }
+
+    ReleaseSemaphore(semaforoControloLotacao, 1, NULL);
+    CloseHandle(semaforoControloLotacao);
+    CloseHandle(hMapFile);
 
     return 0;
 }

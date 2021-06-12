@@ -2,8 +2,9 @@
 
 #include <windows.h>
 #include <tchar.h>
-#include "passageiro.model.h"
 #include "SO2_TP_DLL_2021\SO2_TP_DLL_2021.h"
+
+#include "../passag/passag.model.h"
 
 #define MAXPASSAG 10
 #define BUFFER_SIZE 200
@@ -74,4 +75,4 @@ int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* 
 /**
  *	Simular a viagem do aviao de aeroporto em aeroporto
 **/
-bool aviaoViaja(int partida_x, int partida_y, int destino_x, int destino_y);
+BOOL aviaoViaja(int partida_x, int partida_y, int destino_x, int destino_y);

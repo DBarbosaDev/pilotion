@@ -31,12 +31,12 @@ DWORD WINAPI controlPlanesConnections(LPVOID Control) {
 				ReleaseMutex(pControl->ApplicationHandles.SharedMemoryHandles.planesStackIndexToReadMutex);
 				wprintf(_T("\n>> O Aviao[%i] acabou de se conectar com sucesso.\n"), pControl->PlanesList[indiceParaLeitura].PID);
 
-				if (!ReleaseSemaphore(pControl->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore, 1, NULL))
-					wprintf(_T("Release Semaphore error: %d\n", GetLastError()));
 				break;
 			case WAIT_TIMEOUT:
 				_tprintf(TEXT("Could not receive any sign of num items change. %d\n"), GetLastError());
 				break;
 		}
+
+		ReleaseSemaphore(pControl->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore, -1, NULL);
 	}
 }

@@ -153,7 +153,6 @@
     <ClCompile Include="aviao.c" />
     <ClCompile Include="aviao.model.c" />
     <ClCompile Include="communication.c" />
-    <ClCompile Include="passageiro.model.c" />
     <ClCompile Include="threads_routines.c" />
     <ClCompile Include="ui.console.c" />
   </ItemGroup>
@@ -163,7 +162,6 @@
     </ClInclude>
     <ClInclude Include="aviao.model.h" />
     <ClInclude Include="communication.h" />
-    <ClInclude Include="passageiro.model.h" />
     <ClInclude Include="threads_routines.h" />
     <ClInclude Include="ui.console.h" />
   </ItemGroup>

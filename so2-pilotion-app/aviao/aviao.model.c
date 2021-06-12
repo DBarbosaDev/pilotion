@@ -111,7 +111,7 @@ int moveAviao(int cur_x, int cur_y, int final_x, int final_y, int* next_x, int* 
 	return 1;
 }
 
-bool aviaoViaja(int partida_x, int partida_y, int destino_x, int destino_y)
+BOOL aviaoViaja(int partida_x, int partida_y, int destino_x, int destino_y)
 {	
 	int teste = moveAviao(partida_x, partida_y, destino_x, destino_y, partida_x, partida_y);
 	return teste;

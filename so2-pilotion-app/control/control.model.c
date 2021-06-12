@@ -12,11 +12,11 @@ ControlModel initControlModel() {
 
 	Control.AirportsList = NULL;
 	Control.airportsListLength = 0;
-    Control.maxAirportsLength = !maxAirportsLength ? 10 : maxAirportsLength;
+    Control.maxAirportsLength = !maxAirportsLength ? 3 : maxAirportsLength;
 
 	Control.PlanesList = NULL;
 	Control.planesListLength = 0;
-    Control.maxPlanesLength = !maxPlanesLength ? 10 : maxPlanesLength;
+    Control.maxPlanesLength = !maxPlanesLength ? 3 : maxPlanesLength;
 
 	Control.PassagsList = NULL;
 	Control.passagsListLength = 0;
@@ -99,7 +99,7 @@ void instanciarMutexesSemaforos(ControlModel* Control) {
         NULL, Control->maxPlanesLength, Control->maxPlanesLength, SHARED_MEMORY_STACK_SEMAPHORE);
 
     Control->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore = CreateSemaphore(
-        NULL, 0, Control->maxPlanesLength, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
+        NULL, 0, 1, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
 
     Control->ApplicationHandles.SharedMemoryHandles.planesStackIndexToReadMutex = CreateMutex(
         NULL, FALSE, SHARED_MEMORY_STACK_READ_INDEX_MUTEX);

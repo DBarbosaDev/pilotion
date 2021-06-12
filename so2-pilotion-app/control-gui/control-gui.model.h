@@ -8,11 +8,6 @@
 #include "../aviao/aviao.model.h"
 #include "../passag/passag.model.h"
 
-typedef struct WorkerThreadHandle {
-	HANDLE threadHandle;
-	struct WorkerThread* prox;
-} WorkerThreadHandle;
-
 typedef struct SharedMemoryHandles {
 	HANDLE planesStack;
 	HANDLE planesStackLength;
@@ -24,7 +19,8 @@ typedef struct SharedMemoryHandles {
 	HANDLE planesStackIndexToRead;
 	HANDLE planesStackIndexToReadMutex;
 
-	HANDLE eventAlertPlaneConnection;
+	HANDLE planeStackNumItemSemaphore;
+	//HANDLE eventAlertPlaneConnection;
 } SharedMemoryHandles;
 
 typedef struct SharedMemoryThreads {
@@ -32,7 +28,6 @@ typedef struct SharedMemoryThreads {
 } SharedMemoryThreads;
 
 typedef struct ApplicationHandles {
-	WorkerThreadHandle* passagWorkerThreadsHandles;
 	HANDLE keepAliveThread;
 	HANDLE connectionsRequestsThread;
 
@@ -50,6 +45,9 @@ typedef struct Janela {
 	TCHAR* titulo;
 	HWND handle;
 	HWND handleParente;
+
+	HWND vetorDeHandlesCamposTexto[256];
+	HWND handleBtnDeSubmissao;
 
 	int posicaoX;
 	int posicaoY;
@@ -94,3 +92,4 @@ void instanciarIndicesDaMemoriaPartilhada(ControlModel* Control);
 void instanciarMutexesSemaforoEventos(ControlModel* Control);
 void instanciarThreadsControloDeAvioes(ControlModel* Control);
 void instanciarNomeDasJanelasGUI(ControlModel* Control);
+void recolherValoresFormularioECriarAeroporto(ControlModel* Control, Janela* janela);

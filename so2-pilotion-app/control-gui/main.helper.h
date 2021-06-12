@@ -13,3 +13,4 @@ void setIntValueFromSharedMemory(TCHAR* instanceName, int newValue);
 void sendEventByName(TCHAR* eventName);
 HWND extendedCreateWindow(Janela* window, LPCTSTR lpClassName,LPCTSTR lpWindowName,DWORD dwStyle,int x,int y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam);
 ATOM registWindowClass(HINSTANCE hInstance, Janela windowProperties, WNDPROC windowProceduresCallback, DWORD csStyle);
+void cleanGuiFields(HWND* listOfFields);

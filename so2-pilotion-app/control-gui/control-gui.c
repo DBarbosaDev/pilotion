@@ -74,28 +74,28 @@ void criarCamposDoPainelControlo(ControlModel* Control) {
     ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
     posicaoY += tamanhoTexto;
 
-    handleJanelaCriada = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
-    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    janelaParente->vetorDeHandlesCamposTexto[0] = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(janelaParente->vetorDeHandlesCamposTexto[0], Control->gui.nCmdShow);
     posicaoY += margem + tamanhoTexto;
 
     handleJanelaCriada = CreateWindow(L"static", L"Posição x:", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
     ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
     posicaoY += tamanhoTexto;
 
-    handleJanelaCriada = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
-    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    janelaParente->vetorDeHandlesCamposTexto[1] = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(janelaParente->vetorDeHandlesCamposTexto[1], Control->gui.nCmdShow);
     posicaoY += margem + tamanhoTexto;
 
     handleJanelaCriada = CreateWindow(L"static", L"Posição y:", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
     ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
     posicaoY += tamanhoTexto;
 
-    handleJanelaCriada = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
-    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    janelaParente->vetorDeHandlesCamposTexto[2] = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(janelaParente->vetorDeHandlesCamposTexto[2], Control->gui.nCmdShow);
     posicaoY += margem + tamanhoTexto;
 
-    handleJanelaCriada = CreateWindow(L"button", L"Criar", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto * 2, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
-    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    janelaParente->handleBtnDeSubmissao = CreateWindow(L"button", L"Criar", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto * 2, janelaParente->handle, NULL, Control->gui.hInstancia, GUI_BUTTON_ID_SUBMIT_AIRPORT);
+    ShowWindow(janelaParente->handleBtnDeSubmissao, Control->gui.nCmdShow);
 }
 
 void apresentarJanelas(ControlModel* Control) {
@@ -233,22 +233,27 @@ LRESULT CALLBACK WndProcJanelaDiario(HWND hWnd, UINT message, WPARAM wParam, LPA
 
 LRESULT CALLBACK WndProcJanelaPainelControlo(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     Janela janela = pControl->gui.janelas.controlPannel;
-
+    TCHAR test[200] = _T("\0");
     switch (message) {
     case WM_CREATE: {}
     break;
     case WM_CHAR: {
-        test++;
-        //UpdateWindow(hWnd);
+
     }
     break;
     case WM_COMMAND:
     {
-        test++;
-        wprintf(_T("Tutão Carregado\n"));
+        if (lParam == janela.handleBtnDeSubmissao) {
+            //GetWindowText(janela.vetorDeHandlesCamposTexto[0], test, GetWindowTextLength(janela.vetorDeHandlesCamposTexto[0]) + 1);
+            //MessageBox(janela.handle, test, _T("HEHEHE"), MB_OK);
+            recolherValoresFormularioECriarAeroporto(pControl, &janela);
+        }
+
+        //DialogBox()
+        
         //PostMessage(pControl->gui.janelas.principal.handle, WM_PAINT, NULL, NULL);
         //UpdateWindow(pControl->gui.janelas.principal.handle);
-        ShowWindow(hWnd, pControl->gui.nCmdShow);
+        //ShowWindow(hWnd, pControl->gui.nCmdShow);
     }
     break;
     case WM_PAINT:

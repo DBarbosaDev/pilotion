@@ -3,6 +3,7 @@
 #include <malloc.h>
 
 #include "main.helper.h"
+#include "constants.h"
 
 TCHAR* newString(TCHAR *text) {
 	int textLength = wcslen(text);
@@ -200,4 +201,10 @@ ATOM registWindowClass(HINSTANCE hInstance, Janela windowProperties, WNDPROC win
     wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
+}
+
+void cleanGuiFields(HWND* listOfFields) {
+    for (int i = 0; listOfFields[i] != NOT_INITIALIZED_VALUE; i++) {
+        SetWindowText(listOfFields[i], _T(""));
+    }
 }

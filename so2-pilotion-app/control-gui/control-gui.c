@@ -6,7 +6,7 @@
 #define MAX_LOADSTRING 100
 
 ControlModel* pControl;
-
+int test = 0;
 
 BOOL criarJanelas(ControlModel* Control, int nCmdShow)
 {
@@ -58,15 +58,57 @@ BOOL criarJanelas(ControlModel* Control, int nCmdShow)
     return TRUE;
 }
 
+void criarCamposDoPainelControlo(ControlModel* Control) {
+    Janela* janelaParente = &Control->gui.janelas.controlPannel;
+    HWND handleJanelaCriada;
+    int tamanhoTexto = 20;
+    int margem = 20;
+    int posicaoY = tamanhoTexto + (margem * 2);
+    int larguraDosCampos = janelaParente->largura * 0.5;
+
+    handleJanelaCriada = CreateWindow(L"static", L"Criar aeroporto", WS_CHILDWINDOW, 0, posicaoY, larguraDosCampos, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    posicaoY += margem + tamanhoTexto;
+
+    handleJanelaCriada = CreateWindow(L"static", L"Nome:", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    posicaoY += tamanhoTexto;
+
+    handleJanelaCriada = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    posicaoY += margem + tamanhoTexto;
+
+    handleJanelaCriada = CreateWindow(L"static", L"Posição x:", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    posicaoY += tamanhoTexto;
+
+    handleJanelaCriada = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    posicaoY += margem + tamanhoTexto;
+
+    handleJanelaCriada = CreateWindow(L"static", L"Posição y:", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    posicaoY += tamanhoTexto;
+
+    handleJanelaCriada = CreateWindow(L"edit", L"", WS_CHILDWINDOW | WS_BORDER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+    posicaoY += margem + tamanhoTexto;
+
+    handleJanelaCriada = CreateWindow(L"button", L"Criar", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto * 2, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
+}
+
 void apresentarJanelas(ControlModel* Control) {
     InterfaceGrafica* GUI = &(Control->gui);
 
     ShowWindow(GUI->janelas.principal.handle, GUI->nCmdShow);
+    
     ShowWindow(GUI->janelas.mapa.handle, GUI->nCmdShow);
+
     ShowWindow(GUI->janelas.diario.handle, GUI->nCmdShow);
+
     ShowWindow(GUI->janelas.controlPannel.handle, GUI->nCmdShow);
-    //ShowWindow(hWnd, nCmdShow);
-    //UpdateWindow(hWnd);
+    criarCamposDoPainelControlo(pControl);
 
     //GetTextMetrics(hWnd,&lptm);
 }
@@ -109,12 +151,18 @@ LRESULT CALLBACK WndProcJanelaPrincipal(HWND hWnd, UINT message, WPARAM wParam, 
     case WM_COMMAND:
     {}
     break;
+    case WM_CHAR: {
+        test++;
+        PostMessage(pControl->gui.janelas.controlPannel.handle, WM_PAINT, NULL, NULL);
+        PostMessage(hWnd, WM_PAINT, NULL, NULL);
+    }
+                break;
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
         // TODO: Add any drawing code that uses hdc here...
-
+        
         // --------------------------------------------
         EndPaint(hWnd, &ps);
     }
@@ -169,7 +217,7 @@ LRESULT CALLBACK WndProcJanelaDiario(HWND hWnd, UINT message, WPARAM wParam, LPA
         HDC hdc = BeginPaint(hWnd, &ps);
         // TODO: Add any drawing code that uses hdc here...
         TextOut(hdc, 0, 0, janela.titulo, wcslen(janela.titulo));
-
+        
         // --------------------------------------------
         EndPaint(hWnd, &ps);
     }
@@ -187,16 +235,32 @@ LRESULT CALLBACK WndProcJanelaPainelControlo(HWND hWnd, UINT message, WPARAM wPa
     Janela janela = pControl->gui.janelas.controlPannel;
 
     switch (message) {
+    case WM_CREATE: {}
+    break;
+    case WM_CHAR: {
+        test++;
+        //UpdateWindow(hWnd);
+    }
+    break;
     case WM_COMMAND:
-    {}
+    {
+        test++;
+        wprintf(_T("Tutão Carregado\n"));
+        //PostMessage(pControl->gui.janelas.principal.handle, WM_PAINT, NULL, NULL);
+        //UpdateWindow(pControl->gui.janelas.principal.handle);
+        ShowWindow(hWnd, pControl->gui.nCmdShow);
+    }
     break;
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-        // TODO: Add any drawing code that uses hdc here...
-
+        // TODO: Add any drawing code that uses hdc 100here...
+        TCHAR testS[100] = _T("\0");
+        _itow_s(test, testS, 100, 10);
+        TextOut(hdc, 250, 400, testS, wcslen(testS));
         TextOut(hdc, 0, 0, janela.titulo, wcslen(janela.titulo));
+        
         // --------------------------------------------
         EndPaint(hWnd, &ps);
     }
@@ -220,11 +284,7 @@ void registarClassesDasJanelas(ControlModel* Control) {
     registWindowClass(hInstancia, janelas.controlPannel, WndProcJanelaPainelControlo, CS_HREDRAW | CS_VREDRAW);
 }
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-    _In_opt_ HINSTANCE hPrevInstance,
-    _In_ LPWSTR    lpCmdLine,
-    _In_ int       nCmdShow)
-{
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -241,10 +301,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     if (!criarJanelas(&Control, nCmdShow)) {
         return FALSE;
     }
+
     apresentarJanelas(&Control);
 
     HACCEL hAccelTable = LoadAccelerators(Control.gui.hInstancia, MAKEINTRESOURCE(IDC_CONTROLGUI));
-
     MSG msg;
 
     // Main message loop:

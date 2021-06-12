@@ -1,16 +1,20 @@
-#include <process.h>
+#pragma once
 
 #include "passag.model.h"
 
-Passageiro novoPassageiro(DWORD PID, TCHAR* nome, TCHAR* siglaAeroportoPartida, TCHAR* siglaAeroportoDestino, int tempoEspera) {
-	Passageiro Passag;
+/**
+ * @inheritDoc
+**/
+Passageiro novoPassageiro(int id, int tempoEspera, TCHAR* args[])
+{
+	Passageiro passag;
 
-	Passag.pid = PID == -1 ? GetCurrentProcessId() : PID;
-	Passag.nome = nome;
-	Passag.siglaAeroportoPartida = siglaAeroportoPartida;
-	Passag.siglaAeroportoDestino = siglaAeroportoDestino;
-	Passag.tempoEspera = tempoEspera;
-	Passag.embarcado = false;
+	passag.id = id;
+	passag.tempoEspera = tempoEspera;
+	passag.nome = args[0];
+	passag.siglaAeroportoPartida = args[1];
+	passag.siglaAeroportoDestino = args[2];
 
-	return Passag;
+	return passag;
 }
+

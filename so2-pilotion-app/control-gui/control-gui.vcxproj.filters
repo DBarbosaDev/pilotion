@@ -19,6 +19,9 @@
     <Filter Include="Source Files\helpers">
       <UniqueIdentifier>{0db5a9cd-9f37-423b-86ee-1ba36b265a04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gui">
+      <UniqueIdentifier>{cec46e67-2964-4f97-85c1-5a9d9bff4435}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -51,6 +54,9 @@
     <ClInclude Include="callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gui.helper.h">
+      <Filter>Source Files\helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="control-gui.c">
@@ -74,17 +80,27 @@
     <ClCompile Include="callbacks.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="control-gui.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ClCompile Include="control-panel.gui.c">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui.helper.c">
+      <Filter>Source Files\helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="control-gui.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="airport_pin.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="plane_icon.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

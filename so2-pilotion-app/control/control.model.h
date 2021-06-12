@@ -40,7 +40,7 @@ typedef struct ApplicationHandles {
 } ApplicationHandles;
 
 typedef struct PassagsLinkedList {
-	PassagModel* passag;
+	Passageiro* passag;
 	struct PassagsLinkedList* prox;
 } PassagsLinkedList;
 

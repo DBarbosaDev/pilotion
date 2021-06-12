@@ -6,7 +6,7 @@
 /**
  * @inheritDoc  
 **/
-Passageiro novoPassageiro(int id, int tempoEspera, TCHAR* args[])
+/*Passageiro novoPassageiro(int id, int tempoEspera, TCHAR* args[])
 {
 	Passageiro passag;
 
@@ -18,4 +18,4 @@ Passageiro novoPassageiro(int id, int tempoEspera, TCHAR* args[])
 
 	return passag;
 }
-
+*/

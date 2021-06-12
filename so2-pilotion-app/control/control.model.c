@@ -149,7 +149,7 @@ void instanciarNamedPipeThread(ControlModel* Control)
         NULL,              // no security attribute 
         0,                 // default stack size 
         controlThreadConnections,    // thread proc
-        (LPVOID)Control->ApplicationHandles.NamedPipeHandles.namedPipe,    // thread parameter 
+        (LPVOID)Control,    // thread parameter 
         0,                 // not suspended 
         &dwThreadId);      // returns thread ID 
 

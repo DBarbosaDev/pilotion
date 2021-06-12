@@ -48,9 +48,10 @@ DWORD WINAPI controlPlanesConnections(LPVOID Control)
 
 DWORD WINAPI controlThreadConnections(LPVOID Control)
 {
+    ControlModel* ControlTyped = (ControlModel*)Control;
     HANDLE hHeap = GetProcessHeap();
-    TCHAR *pchRequest = (TCHAR *)HeapAlloc(hHeap, 0, SIZE_BUFFER * sizeof(TCHAR));
-    TCHAR *pchReply = (TCHAR *)HeapAlloc(hHeap, 0, SIZE_BUFFER * sizeof(TCHAR));
+    Passageiro* pchRequest = (Passageiro *)HeapAlloc(hHeap, 0, SIZE_BUFFER * sizeof(Passageiro));
+    Passageiro* pchReply = (Passageiro*)HeapAlloc(hHeap, 0, SIZE_BUFFER * sizeof(Passageiro));
 
     DWORD cbBytesRead = 0, cbReplyBytes = 0, cbWritten = 0;
     BOOL fSuccess = FALSE;
@@ -89,7 +90,7 @@ DWORD WINAPI controlThreadConnections(LPVOID Control)
     }
 
     wprintf(_T("Thread criada, a processar e receber mensagens...\n"));
-    hPipe = (HANDLE)Control;
+    hPipe = (HANDLE)ControlTyped->ApplicationHandles.NamedPipeHandles.namedPipe;
 
     while (1)
     {
@@ -110,7 +111,7 @@ DWORD WINAPI controlThreadConnections(LPVOID Control)
         }
 
         // Process the incoming message.
-        processaCriacaoPassageiro(pchRequest, pchReply, &cbReplyBytes);
+        processaCriacaoPassageiro(pchRequest, pchReply, &cbReplyBytes, ControlTyped);
 
         // Write the reply to the pipe.
         fSuccess = WriteFile(
@@ -128,14 +129,18 @@ DWORD WINAPI controlThreadConnections(LPVOID Control)
     }
 }
 
-void processaCriacaoPassageiro(LPTSTR pchRequest, LPTSTR pchReply, LPDWORD pchBytes)
+void processaCriacaoPassageiro(LPTSTR pchRequest, LPTSTR pchReply, LPDWORD pchBytes, ControlModel* Control)
 {
     // This routine is a simple function to print the client request to the console
     // and populate the reply buffer with a default data string. This is where you
     // would put the actual client request processing code that runs in the context
     // of an instance thread. Keep in mind the main thread will continue to wait for
     // and receive other client connections while the instance thread is working.
-    _tprintf(TEXT("Client Request String:\"%s\"\n"), pchRequest);
+    Passageiro* novoPassageiro = (Passageiro*)pchRequest;
+    
+    //@todo: consultar os aeroportos, e verificar se o aeroporto de destino e de partida existem, caso existam
+    // adicionar a stack de passageiros do control
+    Control->PassagsList->passag = novoPassageiro;
 
     // Check the outgoing message to make sure it's not too long for the buffer.
     if (FAILED(StringCchCopy(pchReply, SIZE_BUFFER, TEXT("default answer from server"))))

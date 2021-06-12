@@ -4,6 +4,8 @@
 #include "threads.h"
 #include "main.helper.h"
 
+#define SIZE_BUFFER 512
+
 ControlModel initControlModel() {
 	ControlModel Control;
 
@@ -114,4 +116,47 @@ void instanciarMutexesSemaforos(ControlModel* Control) {
 void instanciarThreadsControloDeAvioes(ControlModel* Control) {
     Control->ApplicationHandles.SharedMemoryThreads.handlePlanesConnections = CreateThread(
         NULL, 0, controlPlanesConnections, Control, 0, NULL);
+}
+
+
+void instanciarNamedPipe(ControlModel* Control)
+{
+    LPCTSTR lpszPipename = TEXT("\\\\.\\pipe\\passengerPipeServer");
+    Control->ApplicationHandles.NamedPipeHandles.namedPipe = CreateNamedPipe(
+        lpszPipename,             // pipe name 
+        PIPE_ACCESS_DUPLEX,       // read/write access 
+        PIPE_TYPE_BYTE    |       // message type pipe 
+        PIPE_READMODE_BYTE |   // message-read mode 
+        PIPE_WAIT,                // blocking mode 
+        PIPE_UNLIMITED_INSTANCES, // max. instances  
+        SIZE_BUFFER,              // output buffer size 
+        SIZE_BUFFER,              // input buffer size 
+        0,                        // client time-out 
+        NULL                      // default security attribute 
+    );
+
+    if (Control->ApplicationHandles.NamedPipeHandles.namedPipe == INVALID_HANDLE_VALUE)
+    {
+        _tprintf(TEXT("CreateNamedPipe failed, GLE=%d.\n"), GetLastError());
+        return -1;
+    }
+}
+
+void instanciarNamedPipeThread(ControlModel* Control)
+{
+    DWORD  dwThreadId = 0;
+    Control->ApplicationHandles.NamedPipeHandles.hThread = CreateThread(
+        NULL,              // no security attribute 
+        0,                 // default stack size 
+        controlThreadConnections,    // thread proc
+        (LPVOID)Control->ApplicationHandles.NamedPipeHandles.namedPipe,    // thread parameter 
+        0,                 // not suspended 
+        &dwThreadId);      // returns thread ID 
+
+    if (Control->ApplicationHandles.NamedPipeHandles.hThread == NULL)
+    {
+        _tprintf(TEXT("CreateThread failed, GLE=%d.\n"), GetLastError());
+        return -1;
+    }
+    else CloseHandle(Control->ApplicationHandles.NamedPipeHandles.hThread);
 }

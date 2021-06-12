@@ -132,6 +132,7 @@ void _tmain() {
 
     TCHAR command[INPUT_BUFF_SIZE] = _T("\0");
     ControlModel Control = initControlModel();
+    BOOL fConnected = FALSE;
 
     Control.PlanesList = getPlanesStackPointer(
         Control.ApplicationHandles.SharedMemoryHandles.planesStack,
@@ -142,10 +143,19 @@ void _tmain() {
     // routine logic goes here
     while (1) {
         apresentarMenu();
-
         wscanf_s(_T("%99s"), command, INPUT_BUFF_SIZE);
-
         tratarComandos(command, &Control);
+        
+        // logica das pipes
+        instanciarNamedPipe(&Control);
+        fConnected = ConnectNamedPipe(Control.ApplicationHandles.NamedPipeHandles.namedPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+        if (fConnected)
+        {
+            printf("Passag connectado. a instanciar thread.\n");
+            instanciarNamedPipeThread(&Control);
+        }
+        else
+            CloseHandle(Control.ApplicationHandles.NamedPipeHandles.namedPipe);
     }
     // -----------------------
 

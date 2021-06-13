@@ -55,7 +55,7 @@ TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME) {
             requisitionStatus = RegGetValue(HKEY_CURRENT_USER, PATH, VALUE_NAME, RRF_RT_REG_SZ, NULL, NULL, &valueDataSize);
         }
         else {
-            wprintf(_T("ERRO: Insucesso ao obter o tamanho da variável '%s' no caminho '%s'\n"), VALUE_NAME, PATH);
+            wprintf(_T("ERRO: Insucesso ao obter o tamanho da variï¿½vel '%s' no caminho '%s'\n"), VALUE_NAME, PATH);
             return NULL;
         }
         
@@ -64,14 +64,14 @@ TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME) {
     TCHAR* valueData = malloc(valueDataSize);
 
     if (!valueData) {
-        wprintf(_T("ERRO: Alocação de memoria para a variavel em getRegistryVar()\n"));
+        wprintf(_T("ERRO: Alocaï¿½ï¿½o de memoria para a variavel em getRegistryVar()\n"));
         return NULL;
     }
 
     requisitionStatus = RegGetValue(HKEY_CURRENT_USER, PATH, VALUE_NAME, RRF_RT_REG_SZ, NULL, valueData, &valueDataSize);
 
     if (requisitionStatus != ERROR_SUCCESS) {
-        wprintf(_T("ERRO: Insucesso ao obter o valor da variável '%s' do caminho '%s'\n"), VALUE_NAME, PATH);
+        wprintf(_T("ERRO: Insucesso ao obter o valor da variï¿½vel '%s' do caminho '%s'\n"), VALUE_NAME, PATH);
         return NULL;
     }
 
@@ -88,7 +88,7 @@ Aviao* getPlanesStackPointer(HANDLE handle, int numberMaxOfPlanes) {
     Aviao* stack = (Aviao*) MapViewOfFile(handle, FILE_MAP_ALL_ACCESS, 0, 0, (numberMaxOfPlanes * sizeof(Aviao)));
 
     if (stack == NULL) {
-        wprintf(TEXT(">> Não foi possivel aceder à memoria partilhada. Erro: (%d).\n"),
+        wprintf(TEXT(">> Nï¿½o foi possivel aceder ï¿½ memoria partilhada. Erro: (%d).\n"),
             GetLastError());
         return NULL;
     }
@@ -206,6 +206,16 @@ ATOM registWindowClass(HINSTANCE hInstance, Janela windowProperties, WNDPROC win
 void cleanGuiFields(HWND* listOfFields) {
     for (int i = 0; listOfFields[i] != NOT_INITIALIZED_VALUE; i++) {
         SetWindowText(listOfFields[i], _T(""));
+    }
+}
+
+void freeMemoryNodes(void* node, void* arrayOfNodes[], int arrayOfNodesLength) {
+    if (node != NULL) {
+        free(node);
+    }
+
+    for (int i = 0; i < arrayOfNodesLength; i++) {
+        free(arrayOfNodes[i]);
     }
 }
 

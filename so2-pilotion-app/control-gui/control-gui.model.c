@@ -23,6 +23,9 @@ ControlModel initControlModel() {
 
     Control.ApplicationHandles.connectionsRequestsThread = NULL;
 
+    Control.gui.janelas.dimensoesDoMapa[0] = 1000;
+    Control.gui.janelas.dimensoesDoMapa[1] = 1000;
+
     instanciarMemoriasPartilhadas(&Control);
     instanciarIndicesDaMemoriaPartilhada(&Control);
     instanciarMutexesSemaforoEventos(&Control);
@@ -135,16 +138,27 @@ void recolherValoresFormularioECriarAeroporto(ControlModel* Control, Janela* jan
         palavras[i] = malloc(sizeof(TCHAR) * tamanhoPalavra);
 
         GetWindowText(janela->vetorDeHandlesCamposTexto[i], palavras[i], tamanhoPalavra);
+
+        if (i > 0 && (_wtoi(palavras[i]) > Control->gui.janelas.dimensoesDoMapa[0] || _wtoi(palavras[i]) > Control->gui.janelas.dimensoesDoMapa[1])) {
+            freeMemoryNodes(NULL, palavras, i + 1);
+            MessageBox(janela->handle, _T("As coordenadas x e y devem estar compreendidas entre 0 e 1000."), _T("Aviso:"), MB_OK | MB_ICONINFORMATION);
+            return;
+        }
     }
 
     if (Control->AirportsList == NULL) {
-        Control->AirportsList = createAirport(janela->handle, NULL, palavras[0], _wtoi(palavras[1]), _wtoi(palavras[2]));
+        Control->AirportsList = createAirport(janela->handle, NULL, newString(palavras[0]), _wtoi(palavras[1]), _wtoi(palavras[2]));
         Control->airportsListLength += Control->AirportsList != NULL ? 1 : 0;
+
         cleanGuiFields(janela->vetorDeHandlesCamposTexto);
+        InvalidateRect(Control->gui.janelas.mapa.handle, NULL, TRUE);
+
+        freeMemoryNodes(NULL, palavras, 3);
+
         return;
     }
 
-    AirportModel* resultadoAeroporto = createAirport(janela->handle, Control->AirportsList, palavras[0], _wtoi(palavras[1]), _wtoi(palavras[2]));
+    AirportModel* resultadoAeroporto = createAirport(janela->handle, Control->AirportsList, newString(palavras[0]), _wtoi(palavras[1]), _wtoi(palavras[2]));
     
     if (resultadoAeroporto != NULL) {
         Control->airportsListLength += 1;
@@ -152,8 +166,7 @@ void recolherValoresFormularioECriarAeroporto(ControlModel* Control, Janela* jan
         cleanGuiFields(janela->vetorDeHandlesCamposTexto);
     }
     
+    InvalidateRect(Control->gui.janelas.mapa.handle, NULL, TRUE);
 
-    for (int i = 0; i < 3; i++) {
-        free(palavras[i]);
-    }
+    freeMemoryNodes(NULL, palavras, 3);
 }

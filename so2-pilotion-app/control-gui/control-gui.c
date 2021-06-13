@@ -2,11 +2,11 @@
 #include "control-gui.model.h"
 #include "callbacks.h"
 #include "main.helper.h"
+#include "gui.helper.h"
 
 #define MAX_LOADSTRING 100
 
 ControlModel* pControl;
-int test = 0;
 
 BOOL criarJanelas(ControlModel* Control, int nCmdShow)
 {
@@ -70,7 +70,7 @@ void criarCamposDoPainelControlo(ControlModel* Control) {
     ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
     posicaoY += margem + tamanhoTexto;
 
-    handleJanelaCriada = CreateWindow(L"static", L"Nome:", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    handleJanelaCriada = CreateWindow(L"static", L"Sigla (3 letras):", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
     ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
     posicaoY += tamanhoTexto;
 
@@ -78,7 +78,7 @@ void criarCamposDoPainelControlo(ControlModel* Control) {
     ShowWindow(janelaParente->vetorDeHandlesCamposTexto[0], Control->gui.nCmdShow);
     posicaoY += margem + tamanhoTexto;
 
-    handleJanelaCriada = CreateWindow(L"static", L"Posição x:", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    handleJanelaCriada = CreateWindow(L"static", L"Posição x (0 - 1000):", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
     ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
     posicaoY += tamanhoTexto;
 
@@ -86,7 +86,7 @@ void criarCamposDoPainelControlo(ControlModel* Control) {
     ShowWindow(janelaParente->vetorDeHandlesCamposTexto[1], Control->gui.nCmdShow);
     posicaoY += margem + tamanhoTexto;
 
-    handleJanelaCriada = CreateWindow(L"static", L"Posição y:", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
+    handleJanelaCriada = CreateWindow(L"static", L"Posição y (0 - 1000):", WS_CHILDWINDOW | SS_CENTER, margem, posicaoY, larguraDosCampos - margem, tamanhoTexto, janelaParente->handle, NULL, Control->gui.hInstancia, NULL);
     ShowWindow(handleJanelaCriada, Control->gui.nCmdShow);
     posicaoY += tamanhoTexto;
 
@@ -134,6 +134,13 @@ void carregarStrings(ControlModel* Control) {
     Control->gui.janelas.principal.titulo = newString(szTitle);
 }
 
+void carregarImagens(ControlModel* Control) {
+    JanelasAplicacao* janelas = &Control->gui.janelas;
+
+    janelas->hIconAeroporto = (HICON)LoadImageW(NULL, L"airport_pin.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE);
+    janelas->hIconAviao = (HICON)LoadImageW(NULL, _T("plane_icon.ico"), IMAGE_ICON, 50, 50, LR_LOADFROMFILE);
+}
+
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
@@ -151,18 +158,12 @@ LRESULT CALLBACK WndProcJanelaPrincipal(HWND hWnd, UINT message, WPARAM wParam, 
     case WM_COMMAND:
     {}
     break;
-    case WM_CHAR: {
-        test++;
-        PostMessage(pControl->gui.janelas.controlPannel.handle, WM_PAINT, NULL, NULL);
-        PostMessage(hWnd, WM_PAINT, NULL, NULL);
-    }
-                break;
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
         // TODO: Add any drawing code that uses hdc here...
-        
+
         // --------------------------------------------
         EndPaint(hWnd, &ps);
     }
@@ -180,18 +181,27 @@ LRESULT CALLBACK WndProcJanelaMapa(HWND hWnd, UINT message, WPARAM wParam, LPARA
     Janela janela = pControl->gui.janelas.mapa;
 
     switch (message) {
-    case WM_COMMAND:
-    {}
+    case WM_CREATE:
+    {
+        carregarImagens(pControl);
+    }
     break;
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
+        RECT rectJanela = { janela.largura, janela.altura };
         HDC hdc = BeginPaint(hWnd, &ps);
+        HDC hdcMem = CreateCompatibleDC(hdc);
+        HBITMAP hBitMap = CreateCompatibleBitmap(hdc, janela.largura, janela.altura);
+        SelectObject(hdcMem, hBitMap);
+        FillRect(hdcMem, &rectJanela, (HBRUSH)GetStockObject(WHITE_BRUSH));
         // TODO: Add any drawing code that uses hdc here...
 
-
-
+        drawAirports(pControl, hdc, hdcMem);
+        
         // --------------------------------------------
+        BitBlt(hdc, 0, 0, janela.largura, janela.altura, hdcMem, 0, 0, SRCCOPY);
+        DeleteDC(hdcMem);
         EndPaint(hWnd, &ps);
     }
     break;
@@ -233,13 +243,9 @@ LRESULT CALLBACK WndProcJanelaDiario(HWND hWnd, UINT message, WPARAM wParam, LPA
 
 LRESULT CALLBACK WndProcJanelaPainelControlo(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     Janela janela = pControl->gui.janelas.controlPannel;
-    TCHAR test[200] = _T("\0");
+
     switch (message) {
     case WM_CREATE: {}
-    break;
-    case WM_CHAR: {
-
-    }
     break;
     case WM_COMMAND:
     {
@@ -261,15 +267,11 @@ LRESULT CALLBACK WndProcJanelaPainelControlo(HWND hWnd, UINT message, WPARAM wPa
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
         // TODO: Add any drawing code that uses hdc 100here...
-        TCHAR testS[100] = _T("\0");
-        _itow_s(test, testS, 100, 10);
-        TextOut(hdc, 250, 400, testS, wcslen(testS));
-        TextOut(hdc, 0, 0, janela.titulo, wcslen(janela.titulo));
         
         // --------------------------------------------
         EndPaint(hWnd, &ps);
     }
-    break;
+    return DefWindowProc(hWnd, message, wParam, lParam);
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -283,20 +285,53 @@ void registarClassesDasJanelas(ControlModel* Control) {
     HINSTANCE hInstancia = Control->gui.hInstancia;
     JanelasAplicacao janelas = Control->gui.janelas;
 
-    registWindowClass(hInstancia, janelas.principal, WndProcJanelaPrincipal, CS_HREDRAW | CS_VREDRAW);
+    registWindowClass(hInstancia, janelas.principal, WndProcJanelaPrincipal, CS_HREDRAW | CS_VREDRAW );
     registWindowClass(hInstancia, janelas.mapa, WndProcJanelaMapa, CS_HREDRAW | CS_VREDRAW);
     registWindowClass(hInstancia, janelas.diario, WndProcJanelaDiario, CS_HREDRAW | CS_VREDRAW);
     registWindowClass(hInstancia, janelas.controlPannel, WndProcJanelaPainelControlo, CS_HREDRAW | CS_VREDRAW);
+}
+
+int setAppRegistryVars() {
+    return
+        setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("1"))
+        && setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_NAMEDPIPE, _T("\\\\.\\pipe\\PilotionControlNamedPipe\0"));
+}
+
+// TODO get the Registry var REGISTRY_TMP_CONTROL_STATUS and check if the program is already running (DEPRECATED)
+// TODO This should be checked by the namedpipe existance or the shared memory instance existance
+void checkControlStatus() {
+    TCHAR* appStatus = getRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS);
+
+    if (appStatus == NULL) {
+        exit(1);
+    }
+
+    if (!wcscmp(appStatus, _T("1"))) {
+        wprintf(_T("Já existe um programa control em execução.\n"));
+        exit(1);
+    }
+}
+
+void bootstrapInitialSettings() {
+    if (!setAppRegistryVars()) {
+        _wperror(_T("ERROR: O registo das variaveis no Register não teve sucesso.\n"));
+        exit(1);
+    }
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
+    bootstrapInitialSettings();
+
     ControlModel Control = initControlModel();
     pControl = &Control;
     Control.gui.hInstancia = hInstance;
     Control.gui.nCmdShow = nCmdShow;
+    Control.PlanesList = getPlanesStackPointer(Control.ApplicationHandles.SharedMemoryHandles.planesStack, Control.maxPlanesLength);
+
+    instanciarThreadsControloDeAvioes(&Control);
     
     carregarStrings(&Control);
     passarControlParaContextoCallbacks(&Control);
@@ -308,6 +343,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     }
 
     apresentarJanelas(&Control);
+
+    //Control.AirportsList = createAirport(Control.gui.janelas.mapa.handle, NULL, _T("PORTO"), 55, 55);
 
     HACCEL hAccelTable = LoadAccelerators(Control.gui.hInstancia, MAKEINTRESOURCE(IDC_CONTROLGUI));
     MSG msg;
@@ -321,6 +358,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
             DispatchMessage(&msg);
         }
     }
+
+    setRegistryVar(REGISTRY_TMP_CONTROL_PATH, REGISTRY_TMP_CONTROL_STATUS, _T("0"));
 
     return (int)msg.wParam;
 }

@@ -19,9 +19,6 @@
     <Filter Include="Source Files\helpers">
       <UniqueIdentifier>{0db5a9cd-9f37-423b-86ee-1ba36b265a04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\gui">
-      <UniqueIdentifier>{cec46e67-2964-4f97-85c1-5a9d9bff4435}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -80,9 +77,6 @@
     <ClCompile Include="callbacks.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="control-panel.gui.c">
-      <Filter>Source Files\gui</Filter>
-    </ClCompile>
     <ClCompile Include="gui.helper.c">
       <Filter>Source Files\helpers</Filter>
     </ClCompile>
@@ -97,10 +91,10 @@
     <Image Include="bitmap1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="airport_pin.bmp">
+    <Image Include="airport_pin.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="plane_icon.bmp">
+    <Image Include="plane_icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

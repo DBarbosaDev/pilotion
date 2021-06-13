@@ -15,3 +15,4 @@ HWND extendedCreateWindow(Janela* window, LPCTSTR lpClassName,LPCTSTR lpWindowNa
 ATOM registWindowClass(HINSTANCE hInstance, Janela windowProperties, WNDPROC windowProceduresCallback, DWORD csStyle);
 void cleanGuiFields(HWND* listOfFields);
 void ErrorExit(LPTSTR lpszFunction);
+void freeMemoryNodes(void *node, void *arrayOfNodes[], int arrayOfNodesLength);

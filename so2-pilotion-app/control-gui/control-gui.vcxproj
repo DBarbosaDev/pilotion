@@ -158,16 +158,15 @@
     <ClCompile Include="communication.model.c" />
     <ClCompile Include="control-gui.c" />
     <ClCompile Include="control-gui.model.c" />
-    <ClCompile Include="control-panel.gui.c" />
     <ClCompile Include="gui.helper.c" />
     <ClCompile Include="main.helper.c" />
     <ClCompile Include="threads.c" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="airport_pin.bmp" />
+    <Image Include="airport_pin.ico" />
     <Image Include="bitmap1.bmp" />
     <Image Include="control-gui.ico" />
-    <Image Include="plane_icon.bmp" />
+    <Image Include="plane_icon.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

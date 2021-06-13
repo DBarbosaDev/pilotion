@@ -22,21 +22,19 @@ AirportModel* createAirport(HWND windowHandle, AirportModel* AirportsList, TCHAR
 	Airport->prox = NULL;
 
 	if (AirportsList == NULL) {
-		MessageBox(windowHandle, _T("Aeroporto criado com sucesso"), _T("Aviso:"), MB_OK);
-
 		AirportsList = Airport;
 		return AirportsList;
 	}
 
 	while (1) {
 		if (!wcscmp(auxAirportsList->name, name)) {
-			MessageBox(windowHandle, _T("Já existe um aeroporto com o nome inserido. Tente novamente"), _T("Aviso:"), MB_OK | MB_ICONERROR);
+			MessageBox(windowHandle, _T("Já existe um aeroporto com o nome inserido. Tente novamente"), _T("Aviso:"), MB_OK | MB_ICONINFORMATION);
 			free(Airport);
 			return NULL;
 		}
 
 		if (!isNotInAirportMaxRadius(auxAirportsList->positionX, auxAirportsList->positionY, positionX, positionY)) {
-			MessageBox(windowHandle, _T("O aeroporto encontra-se dentro do raio de 10 posições de outro aeroporto. Tente outras coordenadas."), _T("Aviso:"), MB_OK | MB_ICONERROR);
+			MessageBox(windowHandle, _T("O aeroporto encontra-se dentro do raio de 10 posições de outro aeroporto. Tente outras coordenadas."), _T("Aviso:"), MB_OK | MB_ICONINFORMATION);
 			free(Airport);
 			return NULL;
 		}
@@ -48,8 +46,6 @@ AirportModel* createAirport(HWND windowHandle, AirportModel* AirportsList, TCHAR
 
 		auxAirportsList = auxAirportsList->prox;
 	}
-
-	MessageBox(windowHandle, _T("Aeroporto criado com sucesso"), _T("Aviso:"), MB_OK);
 
 	auxAirportsList->prox = Airport;
 

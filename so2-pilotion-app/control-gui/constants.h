@@ -1,5 +1,7 @@
 #pragma once
 
+#define INPUT_BUFF_SIZE 100
+
 #define SHARED_MEMORY_STACK_PLANES _T("Global\PlanesStack")
 #define SHARED_MEMORY_STACK_WRITE_INDEX _T("Global\PlanesStackLastLength")
 #define SHARED_MEMORY_STACK_WRITE_INDEX_MUTEX _T("Global\PlanesStackLastLengthMutex")
@@ -27,8 +29,3 @@
 #define NOT_INITIALIZED_VALUE 0xcccccccccccccccc
 
 #define GUI_BUTTON_ID_SUBMIT_AIRPORT _T("CREATE_AIRPORT")
-
-// TODO delete
-// #define REGISTRY_TMP_AVIAO_PATH _T("SOFTWARE\\Pilotion\\tmp\\aviao\\")
-// #define REGISTRY_TMP_AVIAO_WRITABLE_SHARED_MEMORY _T("writableSharedMemory")
-// #define REGISTRY_TMP_AVIAO_READABLE_SHARED_MEMORY _T("readableSharedMemory")

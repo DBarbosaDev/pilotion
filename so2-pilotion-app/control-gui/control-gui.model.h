@@ -58,6 +58,10 @@ typedef struct Janela {
 typedef struct JanelasAplicacao {
 	Janela principal;
 	Janela mapa;
+	int dimensoesDoMapa[2];
+	HICON hIconAeroporto;
+	HICON hIconAviao;
+
 	Janela diario;
 	Janela controlPannel;
 } JanelasAplicacao;

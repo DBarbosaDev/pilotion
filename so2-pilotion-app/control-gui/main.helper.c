@@ -208,3 +208,13 @@ void cleanGuiFields(HWND* listOfFields) {
         SetWindowText(listOfFields[i], _T(""));
     }
 }
+
+void freeMemoryNodes(void* node, void* arrayOfNodes[], int arrayOfNodesLength) {
+    if (node != NULL) {
+        free(node);
+    }
+
+    for (int i = 0; i < arrayOfNodesLength; i++) {
+        free(arrayOfNodes[i]);
+    }
+}

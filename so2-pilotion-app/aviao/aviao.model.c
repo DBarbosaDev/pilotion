@@ -12,15 +12,19 @@
 /**
  * @inheritDoc
 **/
-Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][BUFFER_SIZE])
+Aviao novoAviao(Aviao preAviao, DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][BUFFER_SIZE])
 {
 	Aviao aviao;
 
+	aviao.pAviaoStack = NULL;
 	aviao.PID = PID == -1 ? GetCurrentProcessId() : PID;
 	aviao.maxPassag = maxPassag;
 	aviao.coordenadasPorSegundo = coordenadasPorSegundo;
 	aviao.coordenadasAtuais[0] = 0;
 	aviao.coordenadasAtuais[1] = 0;
+	aviao.coordenadasDestino[0] = 0;
+	aviao.coordenadasDestino[1] = 0;
+	aviao.passageiros = 0;
 	aviao.nrMaximoDeAvioes = getIntValueFromSharedMemory(SHARED_MEMORY_STACK_LENGTH_VALUE);
 
 	memset(aviao.siglaAeroportoPartida, 0, sizeof(aviao.siglaAeroportoPartida));
@@ -34,8 +38,11 @@ Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dados
 	memset(aviao.eventos.nomeEventoConfirmacaoConexao, 0, sizeof(aviao.eventos.nomeEventoConfirmacaoConexao));
 	memset(aviao.eventos.nomeEventoParaSair, 0, sizeof(aviao.eventos.nomeEventoParaSair));
 
+	aviao.HandlesAplicacao.hMapFile = preAviao.HandlesAplicacao.hMapFile;
+	aviao.HandlesAplicacao.hSemaforoControloLotacao = preAviao.HandlesAplicacao.hSemaforoControloLotacao;
+	aviao.HandlesAplicacao.hSemaforoParaLeituraItem = preAviao.HandlesAplicacao.hSemaforoParaLeituraItem;
+	
 	iniciarEventos(&aviao);
-	iniciarThreads(&aviao);
 
 	return aviao;
 }

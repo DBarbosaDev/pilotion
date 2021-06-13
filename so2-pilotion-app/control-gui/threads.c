@@ -3,40 +3,47 @@
 #include "threads.h"
 #include "main.helper.h"
 #include "constants.h"
+#include "airport.model.h"
 
 DWORD WINAPI controlPlanesConnections(LPVOID Control) {
-	ControlModel* pControl = Control;
+	ControlModel* pControl = (ControlModel*) Control;
 	int indiceParaEscrita = 0, indiceParaLeitura = 0;
+
+	Aviao* aviao;
 
 	wprintf(_T("\n\n>> Thread[%i] para o controlo de conexões de aviões, iniciada.\n"), GetCurrentThreadId());
 
 	while (1) {
-
-		DWORD waitForNumItems = WaitForSingleObject(pControl->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore, INFINITE);
-
-		switch (waitForNumItems) {
+		switch (WaitForSingleObject(pControl->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore, INFINITE)) {
 		case WAIT_OBJECT_0:
-			//WaitForSingleObject(pControl->ApplicationHandles.SharedMemoryHandles.planesStackIndexToWriteMutex, INFINITE);
-			//indiceParaEscrita = getIntValueFromSharedMemory(SHARED_MEMORY_STACK_WRITE_INDEX);
-			//ReleaseMutex(pControl->ApplicationHandles.SharedMemoryHandles.planesStackIndexToWriteMutex);
+			WaitForSingleObject(pControl->ApplicationHandles.SharedMemoryHandles.planesStackIndexToWriteMutex, INFINITE);
+			indiceParaEscrita = getIntValueFromSharedMemory(SHARED_MEMORY_STACK_WRITE_INDEX);
 
-			WaitForSingleObject(pControl->ApplicationHandles.SharedMemoryHandles.planesStackIndexToReadMutex, INFINITE);
-			indiceParaLeitura = getIntValueFromSharedMemory(SHARED_MEMORY_STACK_READ_INDEX);
+			getIndexesFromSharedMemory(
+				pControl->ApplicationHandles.SharedMemoryHandles.planesStackIndexToReadMutex,
+				&indiceParaLeitura, pControl->maxPlanesLength
+			);
 
-			if (indiceParaLeitura == pControl->maxPlanesLength)
-				setIntValueFromSharedMemory(SHARED_MEMORY_STACK_READ_INDEX, 0);
-			else
-				setIntValueFromSharedMemory(SHARED_MEMORY_STACK_READ_INDEX, indiceParaLeitura + 1);
+			aviao = pControl->PlanesList + indiceParaLeitura;
+			AirportModel* aeroportoDestino = getAirportByName(pControl->AirportsList, aviao->siglaAeroportoDestino);
+			AirportModel* aeroportoPartida = getAirportByName(pControl->AirportsList, aviao->siglaAeroportoPartida);
+			if (aeroportoDestino == NULL || aeroportoPartida == NULL) {
+				sendEventByName(aviao->eventos.nomeEventoAeroportosInvalidos);
+			}
+			else {
+				aviao->coordenadasAtuais[0] = aeroportoPartida->positionX;
+				aviao->coordenadasAtuais[1] = aeroportoPartida->positionY;
+				aviao->coordenadasDestino[0] = aeroportoDestino->positionX;
+				aviao->coordenadasDestino[1] = aeroportoDestino->positionY;
 
-			ReleaseMutex(pControl->ApplicationHandles.SharedMemoryHandles.planesStackIndexToReadMutex);
-			wprintf(_T("\n>> O Aviao[%i] acabou de se conectar com sucesso.\n"), pControl->PlanesList[indiceParaLeitura].PID);
+				sendEventByName(aviao->eventos.nomeEventoConfirmacaoConexao);
+			}
 
+			ReleaseMutex(pControl->ApplicationHandles.SharedMemoryHandles.planesStackIndexToWriteMutex);
 			break;
-		case WAIT_TIMEOUT:
-			_tprintf(TEXT("Could not receive any sign of num items change. %d\n"), GetLastError());
+		default:
 			break;
 		}
-
 		ReleaseSemaphore(pControl->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore, -1, NULL);
 	}
 }

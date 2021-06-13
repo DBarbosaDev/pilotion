@@ -20,6 +20,12 @@ typedef struct Eventos {
 	TCHAR nomeEventoParaSair[BUFFER_SIZE];
 } Eventos;
 
+typedef struct HandlesAplicacao {
+	HANDLE hMapFile;
+	HANDLE hSemaforoControloLotacao;
+	HANDLE hSemaforoParaLeituraItem;
+} HandlesAplicacao;
+
 typedef struct Threads {
 	HANDLE hConfirmacaoConexao;
 	HANDLE hAeroportosInvalidos;
@@ -30,21 +36,25 @@ typedef struct Aviao
 {
 	DWORD PID;
 
+	struct Aviao* pAviaoStack;
+
 	int maxPassag;
 	int coordenadasPorSegundo;
 	// x = coordenadasAtuais[0] || y = coordenadasAtuais[1]
 	int coordenadasAtuais[2];
+	int coordenadasDestino[2];
 	//Passageiro *passageiros[MAXPASSAG];
-	int passageiros;
+	unsigned int passageiros;
 
 	TCHAR siglaAeroportoPartida[200];
 	TCHAR siglaAeroportoDestino[200];
 	
-	int nrMaximoDeAvioes;
+	unsigned int nrMaximoDeAvioes;
 	int estadoConexaoComControl;
 
 	Eventos eventos;
 	Threads Threads;
+	HandlesAplicacao HandlesAplicacao;
 } Aviao;
 
 /**
@@ -52,7 +62,7 @@ typedef struct Aviao
  *	dadosAeroporto[0] = sigla aeroporto de partida
  *  dadosAeroporto[1] = sigla do aeroporto de destino
 **/
-Aviao novoAviao(DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][BUFFER_SIZE]);
+Aviao novoAviao(Aviao preAviao, DWORD PID, int maxPassag, int coordenadasPorSegundo, TCHAR dadosAeroporto[2][BUFFER_SIZE]);
 
 void iniciarEventos(Aviao* aviao);
 

@@ -5,12 +5,11 @@
 #include "../control/constants.h"
 
 
-Aviao* adicionaAviaoToStack(Aviao* aviao, HANDLE hMapFile) {
-    Aviao* pAviaoStackNode = NULL;
+Aviao* adicionaAviaoToStack(Aviao* aviao) {
     HANDLE hMutexIndiceEscrita = OpenMutex(MUTEX_ALL_ACCESS | MUTEX_MODIFY_STATE, FALSE, SHARED_MEMORY_STACK_WRITE_INDEX_MUTEX);
     int indiceDeEscrita = 0;
 
-	Aviao *pBuf = (Aviao*)MapViewOfFile(hMapFile, // handle to map object
+	Aviao *pBuf = (Aviao*)MapViewOfFile(aviao->HandlesAplicacao.hMapFile, // handle to map object
         FILE_MAP_ALL_ACCESS,  // read/write permission
         0,
         0,
@@ -20,7 +19,7 @@ Aviao* adicionaAviaoToStack(Aviao* aviao, HANDLE hMapFile) {
     {
         _tprintf(TEXT("Could not map view of file (%d).\n"),
             GetLastError());
-        CloseHandle(hMapFile);
+        CloseHandle(aviao->HandlesAplicacao.hMapFile);
 
         return NULL;
     }
@@ -41,5 +40,5 @@ Aviao* adicionaAviaoToStack(Aviao* aviao, HANDLE hMapFile) {
     memset((pBuf + indiceDeEscrita), 0, sizeof(Aviao));
     CopyMemory(pBuf + indiceDeEscrita, aviao, sizeof(Aviao));
 
-    return aviao;
+    return pBuf + indiceDeEscrita;
 }

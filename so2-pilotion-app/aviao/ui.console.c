@@ -29,7 +29,7 @@ void iniciaUI(int *maxPassag, int *coordenadasPorSegundo, TCHAR dadosAeroporto[2
 void iniciaUIAeroportos(TCHAR* aeroportoPartida, TCHAR* aeroportoDestino)
 {
 	_tprintf(_TEXT("======================================================\n"));
-	_tprintf(_TEXT("||  Reintroduza as sigas dos aeroportos por favor.  ||\n"));
+	_tprintf(_TEXT("|| 	  Aeroportos invalidos. Volte a introduzir.	    ||\n"));
 	_tprintf(_TEXT("======================================================\n"));
 	_tprintf(_TEXT("||           Aeroporto de Partida (SIGLA)           ||\n"));
 	_tprintf(_TEXT("||  -> (string com 3 caracteres) : "));

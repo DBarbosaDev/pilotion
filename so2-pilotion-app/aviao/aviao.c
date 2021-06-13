@@ -46,7 +46,7 @@ int _tmain(int argc, TCHAR** argv[])
         _setmode(_fileno(stderr), _O_WTEXT);
     #endif
 
-    if (argc < 1) {
+    if (argc < 5) {
         _tprintf(_T("Numero de argumentos invalido."));
         return 0;
     }
@@ -88,7 +88,7 @@ int _tmain(int argc, TCHAR** argv[])
     {
         case WAIT_OBJECT_0:
 
-            iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
+            //iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
             aviao = novoAviao(aviao, -1, maxPassag, coordenadasPorSegundo, dados);
             adicionarItemNaStack(&aviao);
 

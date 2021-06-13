@@ -27,10 +27,10 @@ int _tmain(int argc, char* argv[])
 
     TCHAR dados[2][200];
     for (size_t i = 0; i < 2; i++)
-        memset(dados[i], 0, 200);
+        memset(dados[i], 0, sizeof(dados[i]));
 
     TCHAR nome[INPUT_BUFF_SIZE];
-    memset(nome, 0, INPUT_BUFF_SIZE);
+    memset(nome, 0, sizeof(nome));
     int tempoEspera = 0;
 
     while(1){

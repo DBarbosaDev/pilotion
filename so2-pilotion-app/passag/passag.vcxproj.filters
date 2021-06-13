@@ -30,7 +30,7 @@
     <ClCompile Include="..\control\main.helper.c">
       <Filter>Source Files\helpers</Filter>
     </ClCompile>
-    <ClCompile Include="passag.console.c">
+    <ClCompile Include="ui.console.c">
       <Filter>Source Files\helpers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="..\control\main.helper.h">
       <Filter>Source Files\helpers</Filter>
     </ClInclude>
-    <ClInclude Include="passag.console.h">
+    <ClInclude Include="ui.console.h">
       <Filter>Source Files\helpers</Filter>
     </ClInclude>
   </ItemGroup>

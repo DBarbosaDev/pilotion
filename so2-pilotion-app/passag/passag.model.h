@@ -6,9 +6,9 @@
 typedef struct Passageiro {
 	int id;
 	int tempoEspera;
-	TCHAR nome[100];
-	TCHAR siglaAeroportoPartida[200];
-	TCHAR siglaAeroportoDestino[200];
+	TCHAR* nome;
+	TCHAR* siglaAeroportoPartida;
+	TCHAR* siglaAeroportoDestino;
 	BOOL embarcado;
 } Passageiro;
 
@@ -18,4 +18,4 @@ typedef struct Passageiro {
  *  args[1] = sigla do aeroporto de partida
  *	args[2] = sigla do aeroporto de destino
 **/
-Passageiro novoPassageiro(int id, int tempoEspera, TCHAR nome[100], TCHAR dados[2][200]);
+Passageiro novoPassageiro(int id, int tempoEspera, TCHAR* args[]);

@@ -16,5 +16,3 @@ int getIntValueFromSharedMemory(TCHAR* instanceName);
 void setIntValueFromSharedMemory(TCHAR* instanceName, int newValue);
 
 void sendEventByName(TCHAR* eventName);
-
-void ErrorExit(LPTSTR lpszFunction);

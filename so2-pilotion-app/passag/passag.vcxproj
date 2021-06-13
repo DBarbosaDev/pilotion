@@ -144,14 +144,14 @@
     <ClCompile Include="..\control\main.helper.c" />
     <ClCompile Include="passag.model.c" />
     <ClCompile Include="passag.c" />
-    <ClCompile Include="passag.console.c" />
+    <ClCompile Include="ui.console.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\control\main.helper.h">
       <FileType>CppHeader</FileType>
     </ClInclude>
     <ClInclude Include="passag.model.h" />
-    <ClInclude Include="passag.console.h" />
+    <ClInclude Include="ui.console.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

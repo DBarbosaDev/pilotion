@@ -43,7 +43,7 @@ void checkControlStatus() {
     }
 
     if (!wcscmp(appStatus, _T("1"))) {
-        wprintf(_T("Jï¿½ existe um programa control em execuï¿½ï¿½o.\n"));
+        wprintf(_T("Já existe um programa control em execução.\n"));
         exit(1);
     }
 }
@@ -58,12 +58,12 @@ void bootstrapInitialSettings() {
     //checkControlStatus();
 
     if (!setAppRegistryVars()) {
-        _wperror(_T("ERROR: O registo das variaveis no Register nï¿½o teve sucesso.\n"));
+        _wperror(_T("ERROR: O registo das variaveis no Register não teve sucesso.\n"));
         exit(1);
     }
 
     if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)ConsoleHandler, TRUE)) {
-        _wperror(_T("ERROR: O programa nï¿½o consegui carregar o handler da consola.\n"));
+        _wperror(_T("ERROR: O programa não consegui carregar o handler da consola.\n"));
         exit(1);
     }
 }
@@ -72,19 +72,19 @@ void apresentarMenu() {
     //system("cls");
 
     wprintf(_T("\n===== Programa Control =====\n"));
-    wprintf(_T("Escolha uma das opï¿½ï¿½es seguintes:\n"));
+    wprintf(_T("Escolha uma das opções seguintes:\n"));
     wprintf(_T("\ta - Criar um aeroporto;\n"));
     wprintf(_T("\tb - Listar aeroportos disponiveis;\n"));
     wprintf(_T("\t0 - Encerrar programa\n"));
 
-    wprintf(_T("opï¿½ï¿½o: ")); fflush(stdout);
+    wprintf(_T("opção: ")); fflush(stdout);
 }
 
 void pedirDadosECriarAeroporto(ControlModel* Control) {
     int numeroMaximoAvioes = Control->maxPlanesLength;
 
     if (numeroMaximoAvioes == Control->airportsListLength) {
-        wprintf(_T("\n>> O nï¿½mero mï¿½ximo de aeroportos jï¿½ foi atingido.\n"));
+        wprintf(_T("\n>> O número máximo de aeroportos já foi atingido.\n"));
         return;
     }
 
@@ -96,10 +96,10 @@ void pedirDadosECriarAeroporto(ControlModel* Control) {
     wprintf(_T("Nome: ")); fflush(stdout);
     wscanf_s(_T("%99s"), nome, INPUT_BUFF_SIZE);
 
-    wprintf(_T("Posiï¿½ï¿½o X: ")); fflush(stdout);
+    wprintf(_T("Posição X: ")); fflush(stdout);
     wscanf_s(_T("%i"), &posicaoX, sizeof(int));
 
-    wprintf(_T("Posiï¿½ï¿½o Y: ")); fflush(stdout);
+    wprintf(_T("Posição Y: ")); fflush(stdout);
     wscanf_s(_T("%i"), &posicaoY, sizeof(int));
 
     if (Control->AirportsList == NULL) {
@@ -132,7 +132,6 @@ void _tmain() {
 
     TCHAR command[INPUT_BUFF_SIZE] = _T("\0");
     ControlModel Control = initControlModel();
-    BOOL fConnected = FALSE;
 
     Control.PlanesList = getPlanesStackPointer(
         Control.ApplicationHandles.SharedMemoryHandles.planesStack,
@@ -142,22 +141,11 @@ void _tmain() {
 
     // routine logic goes here
     while (1) {
-        instanciarNamedPipe(&Control);
-        fConnected = ConnectNamedPipe(Control.ApplicationHandles.NamedPipeHandles.namedPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
-        if (fConnected)
-        {
-            _tprintf("Passag connectado. a instanciar thread.\n");
-            instanciarNamedPipeThread(&Control);
-        }
-        else
-            CloseHandle(Control.ApplicationHandles.NamedPipeHandles.namedPipe);
-
         apresentarMenu();
+
         wscanf_s(_T("%99s"), command, INPUT_BUFF_SIZE);
+
         tratarComandos(command, &Control);
-        
-        // logica das pipes
-        
     }
     // -----------------------
 

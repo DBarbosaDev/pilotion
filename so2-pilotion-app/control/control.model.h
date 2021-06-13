@@ -30,11 +30,6 @@ typedef struct SharedMemoryThreads {
 	HANDLE handlePlanesConnections;
 } SharedMemoryThreads;
 
-typedef struct NamedPipeHandles {
-	HANDLE namedPipe;
-	HANDLE hThread;
-} NamedPipeHandles;
-
 typedef struct ApplicationHandles {
 	WorkerThreadHandle* passagWorkerThreadsHandles;
 	HANDLE keepAliveThread;
@@ -42,10 +37,7 @@ typedef struct ApplicationHandles {
 
 	SharedMemoryHandles SharedMemoryHandles;
 	SharedMemoryThreads SharedMemoryThreads;
-	NamedPipeHandles NamedPipeHandles;
 } ApplicationHandles;
-
-
 
 typedef struct PassagsLinkedList {
 	Passageiro* passag;
@@ -75,5 +67,3 @@ void instanciarMemoriasPartilhadas(ControlModel* Control);
 void instanciarIndicesDaMemoriaPartilhada(ControlModel* Control);
 void instanciarMutexesSemaforos(ControlModel* Control);
 void instanciarThreadsControloDeAvioes(ControlModel* Control);
-void instanciarNamedPipe(ControlModel* Control);
-void instanciarNamedPipeThread(ControlModel* Control);

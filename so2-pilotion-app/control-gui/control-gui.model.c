@@ -26,6 +26,13 @@ ControlModel initControlModel() {
     Control.gui.janelas.dimensoesDoMapa[0] = 1000;
     Control.gui.janelas.dimensoesDoMapa[1] = 1000;
 
+    for (int i = 0; i < 256; i++) {
+        Control.gui.janelas.controlPannel.vetorDeHandlesCamposTexto[i] = NULL;
+        Control.gui.janelas.mapa.vetorDeHandlesCamposTexto[i] = NULL;
+        Control.gui.janelas.principal.vetorDeHandlesCamposTexto[i] = NULL;
+        Control.gui.janelas.diario.vetorDeHandlesCamposTexto[i] = NULL;
+    }
+
     instanciarMemoriasPartilhadas(&Control);
     instanciarIndicesDaMemoriaPartilhada(&Control);
     instanciarMutexesSemaforoEventos(&Control);
@@ -132,7 +139,7 @@ void recolherValoresFormularioECriarAeroporto(ControlModel* Control, Janela* jan
     unsigned int tamanhoPalavra;
     TCHAR* palavras[3];
 
-    for (int i = 0; NOT_INITIALIZED_VALUE != janela->vetorDeHandlesCamposTexto[i]; i++) {
+    for (int i = 0; janela->vetorDeHandlesCamposTexto[i] != NULL; i++) {
         tamanhoPalavra = GetWindowTextLength(janela->vetorDeHandlesCamposTexto[i]) + 1;
 
         palavras[i] = malloc(sizeof(TCHAR) * tamanhoPalavra);

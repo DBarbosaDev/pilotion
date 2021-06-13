@@ -26,6 +26,4 @@
 #define WINDOW_CLASS_LOGS_NAME _T("LogsWindowClass")
 #define WINDOW_CLASS_PANNEL_NAME _T("PannelWindowClass")
 
-#define NOT_INITIALIZED_VALUE 0xcccccccccccccccc
-
 #define GUI_BUTTON_ID_SUBMIT_AIRPORT _T("CREATE_AIRPORT")

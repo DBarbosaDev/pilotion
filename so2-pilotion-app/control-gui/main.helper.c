@@ -213,7 +213,7 @@ ATOM registWindowClass(HINSTANCE hInstance, Janela windowProperties, WNDPROC win
 }
 
 void cleanGuiFields(HWND* listOfFields) {
-    for (int i = 0; listOfFields[i] != NOT_INITIALIZED_VALUE; i++) {
+    for (int i = 0; listOfFields[i] != NULL; i++) {
         SetWindowText(listOfFields[i], _T(""));
     }
 }

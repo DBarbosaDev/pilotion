@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <malloc.h>
-
+#include <strsafe.h>
 #include "main.helper.h"
 #include "constants.h"
 
@@ -55,7 +55,7 @@ TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME) {
             requisitionStatus = RegGetValue(HKEY_CURRENT_USER, PATH, VALUE_NAME, RRF_RT_REG_SZ, NULL, NULL, &valueDataSize);
         }
         else {
-            wprintf(_T("ERRO: Insucesso ao obter o tamanho da variável '%s' no caminho '%s'\n"), VALUE_NAME, PATH);
+            wprintf(_T("ERRO: Insucesso ao obter o tamanho da variï¿½vel '%s' no caminho '%s'\n"), VALUE_NAME, PATH);
             return NULL;
         }
         
@@ -64,14 +64,14 @@ TCHAR* getRegistryVar(TCHAR* PATH, TCHAR* VALUE_NAME) {
     TCHAR* valueData = malloc(valueDataSize);
 
     if (!valueData) {
-        wprintf(_T("ERRO: Alocação de memoria para a variavel em getRegistryVar()\n"));
+        wprintf(_T("ERRO: Alocaï¿½ï¿½o de memoria para a variavel em getRegistryVar()\n"));
         return NULL;
     }
 
     requisitionStatus = RegGetValue(HKEY_CURRENT_USER, PATH, VALUE_NAME, RRF_RT_REG_SZ, NULL, valueData, &valueDataSize);
 
     if (requisitionStatus != ERROR_SUCCESS) {
-        wprintf(_T("ERRO: Insucesso ao obter o valor da variável '%s' do caminho '%s'\n"), VALUE_NAME, PATH);
+        wprintf(_T("ERRO: Insucesso ao obter o valor da variï¿½vel '%s' do caminho '%s'\n"), VALUE_NAME, PATH);
         return NULL;
     }
 
@@ -88,7 +88,7 @@ Aviao* getPlanesStackPointer(HANDLE handle, int numberMaxOfPlanes) {
     Aviao* stack = (Aviao*) MapViewOfFile(handle, FILE_MAP_ALL_ACCESS, 0, 0, (numberMaxOfPlanes * sizeof(Aviao)));
 
     if (stack == NULL) {
-        wprintf(TEXT(">> Não foi possivel aceder à memoria partilhada. Erro: (%d).\n"),
+        wprintf(TEXT(">> Nï¿½o foi possivel aceder ï¿½ memoria partilhada. Erro: (%d).\n"),
             GetLastError());
         return NULL;
     }
@@ -217,4 +217,37 @@ void freeMemoryNodes(void* node, void* arrayOfNodes[], int arrayOfNodesLength) {
     for (int i = 0; i < arrayOfNodesLength; i++) {
         free(arrayOfNodes[i]);
     }
+}
+
+void ErrorExit(LPTSTR lpszFunction)
+{
+    // Retrieve the system error message for the last-error code
+
+    LPVOID lpMsgBuf;
+    LPVOID lpDisplayBuf;
+    DWORD dw = GetLastError();
+
+    FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        dw,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR)&lpMsgBuf,
+        0, NULL);
+
+    // Display the error message and exit the process
+
+    lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
+        (lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)lpszFunction) + 40) * sizeof(TCHAR));
+    StringCchPrintf((LPTSTR)lpDisplayBuf,
+        LocalSize(lpDisplayBuf) / sizeof(TCHAR),
+        TEXT("%s failed with error %d: %s"),
+        lpszFunction, dw, lpMsgBuf);
+    MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
+
+    LocalFree(lpMsgBuf);
+    LocalFree(lpDisplayBuf);
+    ExitProcess(dw);
 }

@@ -28,21 +28,33 @@ int WINAPI ConsoleHandler(DWORD CEvent) {
     }
 }
 
-int _tmain(int argc, char* argv[])
+int _tmain(int argc, TCHAR** argv[])
 {
+// argv[1] = MAXPASSAG
+// argv[2] = COORDENADASPORSEGUNDO
+// argv[3] = siglaerop Partida
+// argv[4] = siglaerop Destino
     #ifdef UNICODE
         _setmode(_fileno(stdin), _O_WTEXT);
         _setmode(_fileno(stdout), _O_WTEXT);
         _setmode(_fileno(stderr), _O_WTEXT);
     #endif
 
+    if (argc < 1) {
+        _tprintf(_T("Numero de argumentos invalido."));
+        return 0;
+    }
+
     Aviao* pAviaoStack = NULL;
     HANDLE hMapFile, semaforoControloLotacao, semaforoParaLeituraItem;
     TCHAR dados[2][200];
     for (size_t i = 0; i < 2; i++)
         memset(dados[i], 0, 200);
-    int maxPassag = 0;
-    int coordenadasPorSegundo = 0;
+    int maxPassag = atoi(argv[1]);
+    int coordenadasPorSegundo = atoi(argv[2]);
+    wcscpy_s(dados[0], 200, argv[3]);
+    wcscpy_s(dados[1], 200, argv[4]);
+
     
     hMapFile = OpenFileMapping(
         FILE_MAP_ALL_ACCESS,
@@ -85,8 +97,6 @@ int _tmain(int argc, char* argv[])
         default:
             break;
     }
-
-    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
 
     while(1){
         TCHAR command[200];

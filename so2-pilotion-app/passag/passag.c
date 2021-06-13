@@ -9,14 +9,24 @@
 #define SIZE_BUFFER 512
 #define INPUT_BUFF_SIZE 100
 
-int _tmain(int argc, char* argv[])
+int _tmain(int argc, TCHAR** argv[])
 {
+// argv[1] = nome
+// argv[2] = tempoespera
+// argv[3] = siglaerop Partida
+// argv[4] = siglaerop Destino
+
 #ifdef UNICODE
     _setmode(_fileno(stdin), _O_WTEXT);
     _setmode(_fileno(stdout), _O_WTEXT);
     _setmode(_fileno(stderr), _O_WTEXT);
 #endif
 
+    if (argc < 1) {
+        _tprintf(_T("Numero de argumentos invalido."));
+        return 0;
+    }
+    
     HANDLE hPipe;
     Passageiro* passag = NULL;
     LPTSTR lpvMessage = passag;
@@ -25,18 +35,20 @@ int _tmain(int argc, char* argv[])
     DWORD  cbRead, cbToWrite, cbWritten, dwMode;
     LPTSTR lpszPipename = TEXT("\\\\.\\pipe\\passengerPipeServer");
 
-    TCHAR dados[2][200];
-    for (size_t i = 0; i < 2; i++)
-        memset(dados[i], 0, sizeof(dados[i]));
+    TCHAR nome[INPUT_BUFF_SIZE] = _T("\0");
+    wcscpy_s(nome, INPUT_BUFF_SIZE,argv[1]);
 
-    TCHAR nome[INPUT_BUFF_SIZE];
-    memset(nome, 0, sizeof(nome));
-    int tempoEspera = 0;
+    int tempoEspera = atoi(argv[2]);
+    TCHAR dados[2][200];
+    memset(dados[0], 0, 200);
+    memset(dados[1], 0, 200);
+    wcscpy_s(dados[0], 200, argv[3]);
+    wcscpy_s(dados[1], 200, argv[4]);
+
 
     while(1){
         hPipe = CreateFileW(lpszPipename,GENERIC_READ | GENERIC_WRITE,FILE_SHARE_WRITE,
-            NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL
-        );
+            NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
         if (hPipe != INVALID_HANDLE_VALUE)
             break;
 
@@ -55,19 +67,14 @@ int _tmain(int argc, char* argv[])
     }
 
     dwMode = PIPE_READMODE_BYTE;
-    fSuccess = SetNamedPipeHandleState(
-        hPipe,    // pipe handle 
-        &dwMode,  // new pipe mode 
-        NULL,     // don't set maximum bytes 
-        NULL);    // don't set maximum time 
+    fSuccess = SetNamedPipeHandleState( hPipe, &dwMode, NULL, NULL);
     if (!fSuccess)
     {
         _tprintf(TEXT("SetNamedPipeHandleState failed. GLE=%d\n"), GetLastError());
         return -1;
     }
 
-    iniciaUI(&nome, &dados, &tempoEspera);
-    Passageiro nPassag = novoPassageiro(-1, nome, dados[0], dados[1], tempoEspera);
+    Passageiro nPassag = novoPassageiro(-1, tempoEspera, nome, dados);
     lpvMessage = (LPCVOID)&nPassag;
 
     cbToWrite = sizeof(Passageiro);

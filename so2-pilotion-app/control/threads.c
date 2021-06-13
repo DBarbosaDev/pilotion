@@ -3,6 +3,7 @@
 #include "threads.h"
 #include "main.helper.h"
 #include "constants.h"
+#include <strsafe.h>
 
 #define SIZE_BUFFER 512
 
@@ -97,7 +98,7 @@ DWORD WINAPI controlThreadConnections(LPVOID Control)
         fSuccess = ReadFile(
             hPipe,                       // handle to pipe
             pchRequest,                  // buffer to receive data
-            SIZE_BUFFER * sizeof(TCHAR), // size of buffer
+            SIZE_BUFFER * sizeof(Passageiro), // size of buffer
             &cbBytesRead,                // number of bytes read
             NULL);                       // not overlapped I/O
 
@@ -127,6 +128,14 @@ DWORD WINAPI controlThreadConnections(LPVOID Control)
             break;
         }
     }
+
+    FlushFileBuffers(hPipe);
+    DisconnectNamedPipe(hPipe);
+    CloseHandle(hPipe);
+
+    HeapFree(hHeap, 0, pchRequest);
+    HeapFree(hHeap, 0, pchReply);
+    return 1;
 }
 
 void processaCriacaoPassageiro(LPTSTR pchRequest, LPTSTR pchReply, LPDWORD pchBytes, ControlModel* Control)

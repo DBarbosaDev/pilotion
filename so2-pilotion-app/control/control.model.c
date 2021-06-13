@@ -137,6 +137,7 @@ void instanciarNamedPipe(ControlModel* Control)
 
     if (Control->ApplicationHandles.NamedPipeHandles.namedPipe == INVALID_HANDLE_VALUE)
     {
+        ErrorExit(TEXT("CreateNamedPipe failed"));
         _tprintf(TEXT("CreateNamedPipe failed, GLE=%d.\n"), GetLastError());
         return -1;
     }

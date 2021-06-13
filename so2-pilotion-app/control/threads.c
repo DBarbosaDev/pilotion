@@ -147,7 +147,7 @@ void processaCriacaoPassageiro(LPTSTR pchRequest, LPTSTR pchReply, LPDWORD pchBy
     
     // ---------
 
-    if (FAILED(StringCchCopy(pchReply, SIZE_BUFFER, TEXT("default answer from server"))))
+    if (FAILED(StringCchCopy(pchReply, SIZE_BUFFER, _T("Passageiro criado com sucesso!"))))
     {
         *pchBytes = 0;
         pchReply[0] = 0;

@@ -10,6 +10,7 @@ int getRegistryVarInt(TCHAR* PATH, TCHAR* VALUE_NAME);
 Aviao* getPlanesStackPointer(HANDLE handle, int numberMaxOfPlanes);
 int getIntValueFromSharedMemory(TCHAR* instanceName);
 void setIntValueFromSharedMemory(TCHAR* instanceName, int newValue);
+void getIndexesFromSharedMemory(HANDLE hReadMutex, int* readIndexRef, int maxStackLength);
 void sendEventByName(TCHAR* eventName);
 HWND extendedCreateWindow(Janela* window, LPCTSTR lpClassName,LPCTSTR lpWindowName,DWORD dwStyle,int x,int y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam);
 ATOM registWindowClass(HINSTANCE hInstance, Janela windowProperties, WNDPROC windowProceduresCallback, DWORD csStyle);

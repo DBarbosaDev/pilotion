@@ -162,6 +162,15 @@ void setIntValueFromSharedMemory(TCHAR* instanceName, int newValue) {
     UnmapViewOfFile(pBuf);
 }
 
+void getIndexesFromSharedMemory(HANDLE hReadMutex, int* readIndexRef, int maxStackLength) {
+    *readIndexRef = getIntValueFromSharedMemory(SHARED_MEMORY_STACK_READ_INDEX);
+
+    if (readIndexRef == maxStackLength)
+        setIntValueFromSharedMemory(SHARED_MEMORY_STACK_READ_INDEX, 0);
+    else
+        setIntValueFromSharedMemory(SHARED_MEMORY_STACK_READ_INDEX, (*readIndexRef) + 1);
+}
+
 void sendEventByName(TCHAR* eventName) {
     HANDLE hEvent = OpenEvent(EVENT_ALL_ACCESS | EVENT_MODIFY_STATE, FALSE, eventName);
 

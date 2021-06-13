@@ -6,8 +6,9 @@
 #include "communication.h"
 #include "ui.console.h"
 
-#include "../control/constants.h"
-#include "../control/main.helper.h"
+#include "../control-gui/constants.h"
+#include "../control-gui/communication.model.h"
+#include "../control-gui/main.helper.h"
 
 int WINAPI ConsoleHandler(DWORD CEvent) {
     HANDLE semaforoControloLotacao = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
@@ -28,6 +29,11 @@ int WINAPI ConsoleHandler(DWORD CEvent) {
     }
 }
 
+void adicionarItemNaStack(Aviao* aviao) {
+    aviao->pAviaoStack = adicionaAviaoToStack(aviao, aviao->HandlesAplicacao.hMapFile);
+    ReleaseSemaphore(aviao->HandlesAplicacao.hSemaforoParaLeituraItem, 1, NULL);
+}
+
 int _tmain(int argc, char* argv[])
 {
     #ifdef UNICODE
@@ -36,20 +42,21 @@ int _tmain(int argc, char* argv[])
         _setmode(_fileno(stderr), _O_WTEXT);
     #endif
 
-    Aviao* pAviaoStack = NULL;
-    HANDLE hMapFile, semaforoControloLotacao, semaforoParaLeituraItem;
+    Aviao aviao;
+
     TCHAR dados[2][200];
     for (size_t i = 0; i < 2; i++)
         memset(dados[i], 0, 200);
     int maxPassag = 0;
     int coordenadasPorSegundo = 0;
     
-    hMapFile = OpenFileMapping(
+
+    aviao.HandlesAplicacao.hMapFile = OpenFileMapping(
         FILE_MAP_ALL_ACCESS,
         FALSE,
         SHARED_MEMORY_STACK_PLANES);
 
-    if (hMapFile == NULL) { 
+    if (aviao.HandlesAplicacao.hMapFile == NULL) {
         wprintf(TEXT("\n>> O controlador n�o est� a correr. Tente mais tarde\n"));
         system("pause");
         return 1;
@@ -62,41 +69,45 @@ int _tmain(int argc, char* argv[])
 
     wprintf(TEXT("\n>> A aguardar por disponibilidade...\n"));
 
-    semaforoControloLotacao = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
-    semaforoParaLeituraItem = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
+    aviao.HandlesAplicacao.hSemaforoControloLotacao = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE);
+    aviao.HandlesAplicacao.hSemaforoParaLeituraItem = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
     
-    DWORD waitForStackLength = WaitForSingleObject(semaforoControloLotacao, INFINITE);
-
-    switch (waitForStackLength)
+    switch (WaitForSingleObject(aviao.HandlesAplicacao.hSemaforoControloLotacao, INFINITE))
     {
-        case WAIT_OBJECT_0: 
-            Aviao nAviao = novoAviao(-1, maxPassag, coordenadasPorSegundo, dados);
-            
-            pAviaoStack = adicionaAviaoToStack(&nAviao, hMapFile);
+        case WAIT_OBJECT_0:
 
-            ReleaseSemaphore(semaforoParaLeituraItem, 1, NULL);
+            iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
+            aviao = novoAviao(aviao, -1, maxPassag, coordenadasPorSegundo, dados);
+            adicionarItemNaStack(&aviao);
 
-            wprintf(_T("\n>> O Controlador aceitou a conexão com sucesso.\n"));
+            iniciarThreads(&aviao);
 
-            break;
-        case WAIT_TIMEOUT:
-            _tprintf(TEXT("Could not receive any sign of num items change. %d\n"), GetLastError());
             break;
         default:
             break;
     }
 
-    iniciaUI(&maxPassag, &coordenadasPorSegundo, &dados);
+    WaitForSingleObject(aviao.Threads.hAeroportosInvalidos, INFINITE);
+
+    CloseHandle(aviao.eventos.handleEventoAeroportosInvalidos);
+    CloseHandle(aviao.eventos.handleEventoConfirmacaoConexao);
+
+    system("cls");
+
+    wprintf(_T("\n>> Conexão aceite com sucesso.\n"), GetCurrentThreadId());
 
     while(1){
+        fflush(stdout);
+        fflush(stdin);
         TCHAR command[200];
         _tprintf(_TEXT("$>"));
         wscanf_s(_T("%199s"), &command, 200);
     }
 
-    ReleaseSemaphore(semaforoControloLotacao, 1, NULL);
-    CloseHandle(semaforoControloLotacao);
-    CloseHandle(hMapFile);
+    ReleaseSemaphore(aviao.HandlesAplicacao.hSemaforoControloLotacao, 1, NULL);
+    
+    CloseHandle(aviao.HandlesAplicacao.hSemaforoControloLotacao);
+    CloseHandle(aviao.HandlesAplicacao.hMapFile);
 
     return 0;
 }

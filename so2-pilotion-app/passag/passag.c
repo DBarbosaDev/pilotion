@@ -23,9 +23,9 @@ int _tmain(int argc, char* argv[])
 
     TCHAR nome[200];
     memset(nome, 0, 200);
-    int *tempoEspera = 0;
+    int tempoEspera = 0;
 
-    iniciaUI(nome, dados, tempoEspera);
+    iniciaUI(nome, dados, &tempoEspera);
     Passageiro nPassag = novoPassageiro(-1, nome, dados[0], dados[1], tempoEspera);
     
     wprintf(_T("Olá Mundo de passageiros"));

@@ -103,7 +103,7 @@ void instanciarMutexesSemaforoEventos(ControlModel* Control) {
         NULL, Control->maxPlanesLength, Control->maxPlanesLength, SHARED_MEMORY_STACK_SEMAPHORE);
 
     Control->ApplicationHandles.SharedMemoryHandles.planeStackNumItemSemaphore = CreateSemaphore(
-        NULL, 0, 1, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
+        NULL, 0, Control->maxPlanesLength, SHARED_MEMORY_STACK_SEMAPHORE_NUM_ITEM);
 
     Control->ApplicationHandles.SharedMemoryHandles.planesStackIndexToReadMutex = CreateMutex(
         NULL, FALSE, SHARED_MEMORY_STACK_READ_INDEX_MUTEX);

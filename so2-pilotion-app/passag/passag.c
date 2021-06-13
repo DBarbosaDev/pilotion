@@ -70,7 +70,7 @@ int _tmain(int argc, TCHAR** argv[])
     fSuccess = SetNamedPipeHandleState( hPipe, &dwMode, NULL, NULL);
     if (!fSuccess)
     {
-        _tprintf(TEXT("SetNamedPipeHandleState failed. GLE=%d\n"), GetLastError());
+        _tprintf(_T("SetNamedPipeHandleState falhou. Erro=%d\n"), GetLastError());
         return -1;
     }
 
@@ -78,7 +78,7 @@ int _tmain(int argc, TCHAR** argv[])
     lpvMessage = (LPCVOID)&nPassag;
 
     cbToWrite = sizeof(Passageiro);
-    _tprintf(TEXT("Sending %d byte message: \"%s\"\n"), cbToWrite, lpvMessage);
+    _tprintf(_T("Enviar %d bytes: %s\n"), cbToWrite, lpvMessage);
 
     fSuccess = WriteFile(
         hPipe,                  // pipe handle 
@@ -88,11 +88,11 @@ int _tmain(int argc, TCHAR** argv[])
         NULL);
     if (!fSuccess)
     {
-        _tprintf(TEXT("WriteFile to pipe failed. GLE=%d\n"), GetLastError());
+        _tprintf(_T("Escrita para o pipe falhou. Erro=%d\n"), GetLastError());
         return -1;
     }
 
-    _tprintf("\nMessage sent to server, receiving reply as follows:\n");
+    _tprintf(_T("\nEnviar mensagem para o servidor. Receber resposta:\n"));
 
     do
     {
@@ -108,17 +108,16 @@ int _tmain(int argc, TCHAR** argv[])
         if (!fSuccess && GetLastError() != ERROR_MORE_DATA)
             break;
 
-        _tprintf(TEXT("\"%s\"\n"), chBuf);
+        _tprintf(_T("\"%s\"\n"), chBuf);
     } while (!fSuccess);  // repeat loop if ERROR_MORE_DATA 
 
     if (!fSuccess)
     {
-        _tprintf(TEXT("ReadFile from pipe failed. GLE=%d\n"), GetLastError());
+        _tprintf(_T("Leitura do pipe falhou. Erro=%d\n"), GetLastError());
         return -1;
     }
 
-    _tprintf("\n<End of message, press ENTER to terminate connection and exit>");
-
+    system("pause");
     CloseHandle(hPipe);
 
     return 0;

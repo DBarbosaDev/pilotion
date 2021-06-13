@@ -140,18 +140,13 @@ DWORD WINAPI controlThreadConnections(LPVOID Control)
 
 void processaCriacaoPassageiro(LPTSTR pchRequest, LPTSTR pchReply, LPDWORD pchBytes, ControlModel* Control)
 {
-    // This routine is a simple function to print the client request to the console
-    // and populate the reply buffer with a default data string. This is where you
-    // would put the actual client request processing code that runs in the context
-    // of an instance thread. Keep in mind the main thread will continue to wait for
-    // and receive other client connections while the instance thread is working.
     Passageiro* novoPassageiro = (Passageiro*)pchRequest;
-    
-    //@todo: consultar os aeroportos, e verificar se o aeroporto de destino e de partida existem, caso existam
-    // adicionar a stack de passageiros do control
-    Control->PassagsList->passag = novoPassageiro;
 
-    // Check the outgoing message to make sure it's not too long for the buffer.
+    //@todo: consultar os aeroportos, e verificar se o aeroporto de destino e de partida existem, caso existam
+    // adicionar na lista de passageiros do control
+    
+    // ---------
+
     if (FAILED(StringCchCopy(pchReply, SIZE_BUFFER, TEXT("default answer from server"))))
     {
         *pchBytes = 0;
